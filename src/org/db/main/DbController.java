@@ -41,7 +41,7 @@ public class DbController {
 	/**
 	 * Speichert die Instanz dieser Klasse.
 	 */
-	private DbController _controller;
+	private static DbController _controller;
 	
 	/**
 	 * Speichert die Verbindung zur Datenbank.
@@ -88,7 +88,7 @@ public class DbController {
 	 * 
 	 * @return Instanz des Controllers.
 	 */
-	public DbController getInstance() {
+	public static DbController getInstance() {
 		if (_controller == null)
 			_controller = new DbController();
 		return _controller;
@@ -114,10 +114,20 @@ public class DbController {
 			// Überprüfen ob ein Datenbank-Name übergeben wurde
 			if ((name != null) && !name.isEmpty()) {
 				// Überprüfen ob das Verzeichnis existiert
-				File file = new File(System.getProperty("user.home") + 
-						File.separator + name);
-				if (!file.exists())
-					file.mkdirs();
+				String home = new String();
+				
+				if ((System.getenv("APPDATA") != null) && 
+						!System.getenv("APPDATA").isEmpty()) {
+					home = System.getenv("APPDATA") + File.separator;
+				} else {
+					home = System.getProperty("user.home") + File.separator +
+							".";
+				}
+				
+				File file = new File(home + name);
+				
+				if (!file.getParentFile().exists())
+					file.getParentFile().mkdirs();
 				
 				// Pfad und Name der Datenbank speichern
 				_dbName = file.getAbsolutePath();
@@ -220,9 +230,11 @@ public class DbController {
 	/**
 	 * Erzeugt die Status-Nachricht, wenn ein Datenbank-Fehler aufgetreten ist.
 	 * 
+	 * @param e Fehler, der aufgetreten ist.
+	 * 
 	 * @return Status-Nachricht bei Datenbank-Fehler.
 	 */
-	private static LogData statusDbError(Exception e) {
+	public static LogData statusDbError(Exception e) {
 		return LogData.messageError("Fehler beim Zugriff auf die Datenbank", e);
 	}
 	
