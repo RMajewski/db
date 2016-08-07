@@ -1,9 +1,9 @@
 /* 
-* Copyright 2016 René Majewski
+* Copyright 2016 RenÃ© Majewski
 *  
 * Lizenziert unter der EUPL, Version 1.1 oder - sobald diese von der
-* Europäischen Kommission genehmigt wurden - Folgeversionen der EUPL
-* ("Lizenz"); Sie dürfen dieses Werk ausschließlich gemäß dieser Lizenz
+* EuropÃ¤ischen Kommission genehmigt wurden - Folgeversionen der EUPL
+* ("Lizenz"); Sie dÃ¼rfen dieses Werk ausschlieÃŸlich gemÃ¤ÃŸ dieser Lizenz
 * nutzen. 
 * 
 * Eine Kopie der Lizenz finden Sie hier: 
@@ -11,9 +11,9 @@
 *  
 * Sofern nicht durch anwendbare Rechtsvorschriften gefordert oder in 
 * schriftlicher Form vereinbart, wird die unter der Lizenz verbreitete 
-* Software "so wie sie ist", OHNE JEGLICHE GEWÄHRLEISTUNG ODER BEDINGUNGEN -
-* ausdrücklich oder stillschweigend - verbreitet.
-* Die sprachspezifischen Genehmigungen und Beschränkungen unter der Lizenz
+* Software "so wie sie ist", OHNE JEGLICHE GEWÃ„HRLEISTUNG ODER BEDINGUNGEN -
+* ausdrÃ¼cklich oder stillschweigend - verbreitet.
+* Die sprachspezifischen Genehmigungen und BeschrÃ¤nkungen unter der Lizenz
 * sind dem Lizenztext zu entnehmen.
 */ 
 
@@ -27,9 +27,9 @@ import java.util.List;
  * Datenbank-Abfragen bereit stellen.
  * 
  * Der Name der Datenbank-Tabelle und die Namen der einzelnen Spalten werden
- * dann gespeichert und können über Getter-Methoden abgerufen werden. 
+ * dann gespeichert und kÃ¶nnen Ã¼ber Getter-Methoden abgerufen werden. 
 
- * @author René Majewski
+ * @author RenÃ© Majewski
  * 
  * @version 0.1
  * @since 0.1
@@ -56,16 +56,16 @@ public abstract class AbstractQuery implements QueryInterface {
 	}
 	
 	/**
-	 * Überprüft die angegebene ID, ob sie größer als <b>-1</b> ist. Ist dies
-	 * der Fall, so wird die angegebene Stelle mit der ID überschrieben. 
+	 * ÃœberprÃ¼ft die angegebene ID, ob sie grÃ¶ÃŸer als <b>-1</b> ist. Ist dies
+	 * der Fall, so wird die angegebene Stelle mit der ID Ã¼berschrieben. 
 	 * 
 	 * @param id ID, die in der Zeichenkette ersetzt werden soll.
 	 * 
 	 * @param builder Zeichenkette, in die die ID geschrieben werde soll.
 	 * 
-	 * @param last Wird <b>true</b> übergeben, so wird das letzte Fragezeichen
-	 * mit der ID überschrieben. <b>false</b>, so wird das erste Fragezeichen
-	 * mit der ID überschrieben.
+	 * @param last Wird <b>true</b> Ã¼bergeben, so wird das letzte Fragezeichen
+	 * mit der ID Ã¼berschrieben. <b>false</b>, so wird das erste Fragezeichen
+	 * mit der ID Ã¼berschrieben.
 	 */
 	protected void replaceId(int id, StringBuilder builder, boolean last) {
 		if (id > -1)
@@ -78,7 +78,30 @@ public abstract class AbstractQuery implements QueryInterface {
 	}
 	
 	/**
-	 * Liefert den Namen der zugehörigenen Datenbank-Tabelle
+	 * Ãœberschreibt die angegebenen Zeichen mit der Ã¼bergebenen Zeichenkette.
+	 * 
+	 * @param search Zeichen, die Ã¼berschrieben werden sollen.
+	 * 
+	 * @param str Zeichenkette, die die angegebenen Zeichen Ã¼berschreiben
+	 * sollen.
+	 * 
+	 * @param builder StringBuilder in der die angegebenen Zeichen gesucht und
+	 * Ã¼berschrieben werden sollen.
+	 */
+	protected void replace(String search, String str, StringBuilder builder) {
+		if ((search == null) || search.isEmpty())
+			throw new IllegalArgumentException("search muss angegeben werden");
+		
+		if (builder == null)
+			throw new IllegalArgumentException(
+					"builder muss angegeben werden.");
+		builder.replace(builder.indexOf(search),
+				
+				builder.indexOf(search) + search.length(), str);
+	}
+	
+	/**
+	 * Liefert den Namen der zugehÃ¶rigen Datenbank-Tabelle
 	 * 
 	 * @return Name der Datenbank-Tabelle
 	 */
@@ -105,65 +128,68 @@ public abstract class AbstractQuery implements QueryInterface {
 	}
 	
 	/**
-	 * Erzeugt die Datenbank-Abfrage, um alle Datensätze anzuzeigen.
-	 * Die Datensätze werden nach den IDs geordnet.
+	 * Erzeugt die Datenbank-Abfrage, um alle DatensÃ¤tze anzuzeigen.
+	 * Die DatensÃ¤tze werden nach den IDs geordnet.
 	 * 
 	 * Diese Abfrage wird mit Hilfe der gespeicherten Spalten-Namen
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
-	 * @return Datenbank-Abfrage, um alle Datensätze aufzulisten
+	 * @return Datenbank-Abfrage, um alle DatensÃ¤tze aufzulisten
 	 */
 	@Override
 	public String select() {
-		return sort(null);
+		return sort((String[])null);
 	}
 	
 	/**
 	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz in die Tabelle
-	 * einzufügen.
+	 * einzufÃ¼gen.
 	 * 
 	 * Diese Abfrage wird mit Hilfe der gespeicherten Spalten-Namen
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
-	 * Es werden Anführungszeichen um die Fragezeichen gesetzt.
+	 * Es werden AnfÃ¼hrungszeichen um die Fragezeichen gesetzt.
 	 * 
-	 * @return Datenbank-Abfrage um neuen Datensatz einzufügen
+	 * @return Datenbank-Abfrage um neuen Datensatz einzufÃ¼gen
 	 */
 	@Override
 	public String insert() {
-		return insert(true);
+		return insert(true, false);
 	}
 	
 	/**
 	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz in die Tabelle
-	 * einzufügen.
+	 * einzufÃ¼gen.
 	 * 
 	 * Diese Abfrage wird mit Hilfe der gespeicherten Spalten-Namen
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
-	 * @return Datenbank-Abfrage um neuen Datensatz einzufügen
+	 * @return Datenbank-Abfrage um neuen Datensatz einzufÃ¼gen
 	 * 
-	 * @param quotes Bei <b>true</b> werden die Anführungszeichen gesetzt.
-	 * Bei <b>false</b> werden keine Anführungszeichen gesetzt.
+	 * @param quotes Bei <b>true</b> werden die AnfÃ¼hrungszeichen gesetzt.
+	 * Bei <b>false</b> werden keine AnfÃ¼hrungszeichen gesetzt.
+	 * 
+	 * @param id Bei <b>true</b> wird das Feld fÃ¼r die ID mit angegeben. Bei
+	 * <b>false</b> wird es nicht.</b>
 	 */
-	public String insert(boolean quotes) {
+	public String insert(boolean quotes, boolean id) {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("INSERT INTO ");
 		
-		// Anführungszeichen
+		// AnfÃ¼hrungszeichen
 		String quote = new String("");
 		if (quotes)
 			quote = new String("\"");
 		
-		// Tabellen-Namen einfügen
+		// Tabellen-Namen einfÃ¼gen
 		ret.append(_tableName);
 		ret.append(" (");
 		
-		// Spalten-Namen einfügen (id auslassen)
+		// Spalten-Namen einfÃ¼gen (id auslassen)
 		boolean first = true;
 		int queries = 0;
 		for (int i = 0; i < _columnNames.size(); i++) {
-			if (!_columnNames.get(i).equals("id")) {
+			if (!_columnNames.get(i).equals("id") || id) {
 				if (first)
 					first = false;
 				else
@@ -173,7 +199,7 @@ public abstract class AbstractQuery implements QueryInterface {
 			}
 		}
 		
-		// Anzahl Fragezeichen einfügen
+		// Anzahl Fragezeichen einfÃ¼gen
 		ret.append(") VALUES (");
 		for (int i = 0; i < queries; i++) {
 			if (i > 0)
@@ -185,31 +211,31 @@ public abstract class AbstractQuery implements QueryInterface {
 		}
 		ret.append(");");
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 
 	/**
 	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz in die Tabelle
-	 * einzufügen. Es wird auch die ID mit in die Abfrage eingebaut.
+	 * einzufÃ¼gen. Es wird auch die ID mit in die Abfrage eingebaut.
 	 * 
 	 * Diese Abfrage wird mit Hilfe der gespeicherten Spalten-Namen
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
-	 * @return Datenbank-Abfrage um neuen Datensatz einzufügen
+	 * @return Datenbank-Abfrage um neuen Datensatz einzufÃ¼gen
 	 */
 	public String insertWithId() {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("INSERT INTO ");
 		
-		// Anführungszeichen
+		// AnfÃ¼hrungszeichen
 		String quote = new String("\"");
 		
-		// Tabellen-Namen einfügen
+		// Tabellen-Namen einfÃ¼gen
 		ret.append(_tableName);
 		ret.append(" (");
 		
-		// Spalten-Namen einfügen (id auslassen)
+		// Spalten-Namen einfÃ¼gen (id auslassen)
 		boolean first = true;
 		int queries = 0;
 		for (int i = 0; i < _columnNames.size(); i++) {
@@ -221,7 +247,7 @@ public abstract class AbstractQuery implements QueryInterface {
 			queries++;
 		}
 		
-		// Anzahl Fragezeichen einfügen
+		// Anzahl Fragezeichen einfÃ¼gen
 		ret.append(") VALUES (");
 		for (int i = 0; i < queries; i++) {
 			if (i > 0)
@@ -233,33 +259,33 @@ public abstract class AbstractQuery implements QueryInterface {
 		}
 		ret.append(");");
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz zu ändern.
-	 * Wird als ID <b>-1</b> übergeben, so wird als Platzhalter ein
-	 * Fragenzeichen eingesetzt. Wenn nicht, so wird die ID mit in der
+	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz zu Ã¤ndern.
+	 * Wird als ID <b>-1</b> Ã¼bergeben, so wird als Platzhalter ein
+	 * Fragezeichen eingesetzt. Wenn nicht, so wird die ID mit in der
 	 * Abfrage erstellt.
 	 * 
 	 * Diese Abfrage wird mit Hilfe der gespeicherten Spalten-Namen
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
-	 * @param id ID des Datensatzes, der geändert werden soll.
+	 * @param id ID des Datensatzes, der geÃ¤ndert werden soll.
 	 * 
-	 * @return Datenbank-Abfrage um einen Datensatz zu ändern
+	 * @return Datenbank-Abfrage um einen Datensatz zu Ã¤ndern
 	 */
 	@Override
 	public String update(int id) {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("UPDATE ");
 		
-		// Tabellen-Namen einfügen
+		// Tabellen-Namen einfÃ¼gen
 		ret.append(_tableName);
 		ret.append(" SET ");
 		
-		// Spalten mit Fragenzeichen einfügen ( id auslassen)
+		// Spalten mit Fragezeichen einfÃ¼gen ( id auslassen)
 		boolean first = true;
 		for (int i = 0; i < _columnNames.size(); i++) {
 			if (!_columnNames.get(i).equals("id")) {
@@ -273,50 +299,50 @@ public abstract class AbstractQuery implements QueryInterface {
 			}
 		}
 		
-		// Abfrage abschließen
+		// Abfrage abschlieÃŸen
 		ret.append(" WHERE id = ?");
 		
-		// ID einfügen
+		// ID einfÃ¼gen
 		replaceId(id, ret, true);
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz löschen.
-	 * Wird als ID <b>-1</b> übergeben, so wird als Platzhalter ein
-	 * Fragenzeichen eingesetzt. Wenn nicht, so wird die ID mit in der
+	 * Erzeugt die Datenbank-Abfrage, um einen neuen Datensatz lÃ¶schen.
+	 * Wird als ID <b>-1</b> Ã¼bergeben, so wird als Platzhalter ein
+	 * Fragezeichen eingesetzt. Wenn nicht, so wird die ID mit in der
 	 * Abfrage erstellt.
 	 * 
 	 * Diese Abfrage wird mit Hilfe der gespeicherten Spalten-Namen
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
-	 * @param id ID des Datensatzes, der gelöscht werden soll.
+	 * @param id ID des Datensatzes, der gelÃ¶scht werden soll.
 	 * 
-	 * @return Datenbank-Abfrage um einen Datensatz zu löschen
+	 * @return Datenbank-Abfrage um einen Datensatz zu lÃ¶schen
 	 */
 	@Override
 	public String delete(int id) {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("DELETE FROM ");
 		
-		// Tabellen-Namen einfügen und Abfrage abschließen
+		// Tabellen-Namen einfÃ¼gen und Abfrage abschlieÃŸen
 		ret.append(_tableName);
 		ret.append(" WHERE id = ?");
 		
 		// ID ersetzen
 		replaceId(id, ret, true);
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Datenbank-Abfrage, in der die Anzahl der Datensätze
+	 * Erzeugt die Datenbank-Abfrage, in der die Anzahl der DatensÃ¤tze
 	 * ermittelt wird.
 	 * 
-	 * @return Datenbank-Abfrage, in der Anzah der Datensätze ermittelt wird.
+	 * @return Datenbank-Abfrage, in der Anzahl der DatensÃ¤tze ermittelt wird.
 	 */
 	@Override
 	public String count() {
@@ -325,19 +351,19 @@ public abstract class AbstractQuery implements QueryInterface {
 		ret.append(_tableName);
 		ret.append("'");
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
 	 * Erzeugt die Datenbank-Abfrage, in der ein bestimmter Datensatz
-	 * ausgewählt werden soll.
+	 * ausgewÃ¤hlt werden soll.
 	 * 
 	 * @param col Spalte, in der gesucht werden soll.
 	 * 
 	 * @param str Zeichenkette nach der gesucht werden soll.
 	 * 
-	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
+	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewÃ¤hlt
 	 * werden soll.
 	 */
 	@Override
@@ -345,7 +371,7 @@ public abstract class AbstractQuery implements QueryInterface {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("SELECT ");
 		
-		// Spalten-Namen einfügen
+		// Spalten-Namen einfÃ¼gen
 		for (int i = 0; i < _columnNames.size(); i++) {
 			if (i == 0)
 				ret.append(_columnNames.get(i));
@@ -355,11 +381,11 @@ public abstract class AbstractQuery implements QueryInterface {
 			}
 		}
 		
-		// Tabellen-Name einfügen
+		// Tabellen-Name einfÃ¼gen
 		ret.append(" FROM ");
 		ret.append(_tableName);
 		
-		// Suche einfügen
+		// Suche einfÃ¼gen
 		ret.append(" WHERE ");
 		ret.append(col);
 		ret.append(" = \"");
@@ -369,27 +395,27 @@ public abstract class AbstractQuery implements QueryInterface {
 		// Nach was wird geordnet?
 		ret.append(" ORDER BY id ASC");
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
 	 * Erzeugt die Datenbank-Abfrage, in der ein bestimmter Datensatz
-	 * ausgewählt werden soll.
+	 * ausgewÃ¤hlt werden soll.
 	 * 
 	 * @param col Spalte, in der gesucht werden soll.
 	 * 
-	 * @param str Inter-Wert, nach dem gesucht werden soll.
+	 * @param search Integer-Wert, nach dem gesucht werden soll.
 	 * 
-	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
+	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewÃ¤hlt
 	 * werden soll.
 	 */
 	@Override
-	public String search(String col, int str) {
+	public String search(String col, int search) {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("SELECT ");
 		
-		// Spalten-Namen einfügen
+		// Spalten-Namen einfÃ¼gen
 		for (int i = 0; i < _columnNames.size(); i++) {
 			if (i == 0)
 				ret.append(_columnNames.get(i));
@@ -399,20 +425,20 @@ public abstract class AbstractQuery implements QueryInterface {
 			}
 		}
 		
-		// Tabellen-Name einfügen
+		// Tabellen-Name einfÃ¼gen
 		ret.append(" FROM ");
 		ret.append(_tableName);
 		
-		// Suche einfügen
+		// Suche einfÃ¼gen
 		ret.append(" WHERE ");
 		ret.append(col);
 		ret.append(" = ");
-		ret.append(str);
+		ret.append(search);
 		
 		// Nach was wird geordnet?
 		ret.append(" ORDER BY id ASC");
 		
-		// Abfrage zurück geben
+		// Abfrage zurÃ¼ck geben
 		return ret.toString();
 	}
 	
@@ -427,10 +453,23 @@ public abstract class AbstractQuery implements QueryInterface {
 	 */
 	@Override
 	public String sort(String col) {
-		// Rückgabe vorbereiten
+		String[] sort = {col};
+		return sort(sort);
+	}
+	
+	/**
+	 * Erstellt die SQL-Abfrage zum sortieren der DatensÃ¤tze.
+	 * 
+	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, um die DatensÃ¤tze zu sortieren.
+	 */
+	@Override
+	public String sort(String[] cols) {
+		// RÃ¼ckgabe vorbereiten
 		StringBuilder ret = new StringBuilder("SELECT ");
 		
-		// Spalten-Namen einfügen
+		// Spalten-Namen einfÃ¼gen
 		for (int i = 0; i < _columnNames.size(); i++) {
 			if (i == 0)
 				ret.append(_columnNames.get(i));
@@ -440,59 +479,66 @@ public abstract class AbstractQuery implements QueryInterface {
 			}
 		}
 		
-		// Tabellen-Name einfügen
+		// Tabellen-Name einfÃ¼gen
 		ret.append(" FROM ");
 		ret.append(_tableName);
 		
-		// Nach was wird geordnet?
 		ret.append(" ORDER BY ");
-		if (col == null || col.isEmpty())
+
+		// Nach was soll sortiert werden?
+		if ((cols != null) && (cols.length > 0)) {
+			for (int i = 0; i < cols.length; i++) {
+				if (i > 0)
+					ret.append(", ");
+				ret.append(cols[i]);
+			}
+		} else {
 			ret.append("id");
-		else
-			ret.append(col);
+		}
+
 		ret.append(" ASC");
 		
-		// Rückgabe der Datenbank-Abfrage
+		// RÃ¼ckgabe der Datenbank-Abfrage
 		return ret.toString();
 	}
 	
 	/**
-	 * Gibt die Status-Nachricht fürs Einfügen eines Datensatzes zurück.
+	 * Gibt die Status-Nachricht fÃ¼rs EinfÃ¼gen eines Datensatzes zurÃ¼ck.
 	 * 
-	 * @return Status-Nachricht fürs Einfügen eines Datensatzes
+	 * @return Status-Nachricht fÃ¼rs EinfÃ¼gen eines Datensatzes
 	 */
 	@Override
 	public String statusInsertOk() {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder("Datenbank: In die Tabelle '");
 		ret.append(_tableName);
-		ret.append("' wurde ein Datensatz eingefügt.");
+		ret.append("' wurde ein Datensatz eingefÃ¼gt.");
 		
-		// Nachricht zurück geben
+		// Nachricht zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Status-Nachricht, wenn der Datensatz nicht eingefügt werden
+	 * Erzeugt die Status-Nachricht, wenn der Datensatz nicht eingefÃ¼gt werden
 	 * kann.
 	 * 
-	 * @return Status-Nachricht, wenn Datensatz nicht eingefügt werden konnte.
+	 * @return Status-Nachricht, wenn Datensatz nicht eingefÃ¼gt werden konnte.
 	 */
 	@Override
 	public String statusInsertError() {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder("Datenbank: In die Tabelle '");
 		ret.append(_tableName);
-		ret.append("' konnte kein Datensatz eingefügt werden.");
+		ret.append("' konnte kein Datensatz eingefÃ¼gt werden.");
 		
-		// Nachricht zurück geben
+		// Nachricht zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Status-Nachricht, fürs ändern einen Datensatzes.
+	 * Erzeugt die Status-Nachricht, fÃ¼rs Ã¤ndern einen Datensatzes.
 	 * 
-	 * @return Status-Nachricht, wenn Datensatz geändert wurde.
+	 * @return Status-Nachricht, wenn Datensatz geÃ¤ndert wurde.
 	 */
 	@Override
 	public String statusUpdateOk(int id) {
@@ -502,17 +548,17 @@ public abstract class AbstractQuery implements QueryInterface {
 		ret.append(id);
 		ret.append(" aus der Tabelle '");
 		ret.append(_tableName);
-		ret.append("' wurde geändert.");
+		ret.append("' wurde geÃ¤ndert.");
 		
-		// nachrihct zurück geben
+		// nachrihct zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Status-Nachricht, wenn der Datensatz nicht geändert werden
+	 * Erzeugt die Status-Nachricht, wenn der Datensatz nicht geÃ¤ndert werden
 	 * kann.
 	 * 
-	 * @return Status-Nachricht, wenn Datensatz nicht geändert werden konnte
+	 * @return Status-Nachricht, wenn Datensatz nicht geÃ¤ndert werden konnte
 	 */
 	@Override
 	public String statusUpdateError(int id) {
@@ -522,16 +568,16 @@ public abstract class AbstractQuery implements QueryInterface {
 		ret.append(id);
 		ret.append(" aus der Tabelle '");
 		ret.append(_tableName);
-		ret.append("' konnte nicht geändert werden.");
+		ret.append("' konnte nicht geÃ¤ndert werden.");
 		
-		// Nachricht zurück geben
+		// Nachricht zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Status-Nachrciht, wenn ein Datensatz gelöscht wurde.
+	 * Erzeugt die Status-Nachricht, wenn ein Datensatz gelÃ¶scht wurde.
 	 * 
-	 * @return Status-Nachricht, wenn Datensatz gelöscht wurde.
+	 * @return Status-Nachricht, wenn Datensatz gelÃ¶scht wurde.
 	 */
 	@Override
 	public String statusDeleteOk(int id) {
@@ -541,17 +587,17 @@ public abstract class AbstractQuery implements QueryInterface {
 		ret.append(id);
 		ret.append(" wurde aus der Tabelle '");
 		ret.append(_tableName);
-		ret.append("' gelöscht.");
+		ret.append("' gelÃ¶scht.");
 		
-		// Nachricht zurück geben
+		// Nachricht zurÃ¼ck geben
 		return ret.toString();
 	}
 	
 	/**
-	 * Erzeugt die Status-Nachricht, wenn ein Datensatz nicht gelöscht werden
+	 * Erzeugt die Status-Nachricht, wenn ein Datensatz nicht gelÃ¶scht werden
 	 * konnte.
 	 * 
-	 * @return Status-Nachricht, wenn Datensatz nicht gelöscht werden konnte.
+	 * @return Status-Nachricht, wenn Datensatz nicht gelÃ¶scht werden konnte.
 	 */
 	@Override
 	public String statusDeleteError(int id) {
@@ -561,9 +607,9 @@ public abstract class AbstractQuery implements QueryInterface {
 		ret.append(id);
 		ret.append(" konnte nicht aus der Tabelle '");
 		ret.append(_tableName);
-		ret.append("' gelöscht werden.");
+		ret.append("' gelÃ¶scht werden.");
 		
-		// Nachricht zurück geben
+		// Nachricht zurÃ¼ck geben
 		return ret.toString();
 	}
 }

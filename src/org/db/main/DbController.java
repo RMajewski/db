@@ -1,9 +1,9 @@
 /* 
-* Copyright 2016 René Majewski
+* Copyright 2016 RenÃ© Majewski
 *  
 * Lizenziert unter der EUPL, Version 1.1 oder - sobald diese von der
-* Europäischen Kommission genehmigt wurden - Folgeversionen der EUPL
-* ("Lizenz"); Sie dürfen dieses Werk ausschließlich gemäß dieser Lizenz
+* EuropÃ¤ischen Kommission genehmigt wurden - Folgeversionen der EUPL
+* ("Lizenz"); Sie dÃ¼rfen dieses Werk ausschlieÃŸlich gemÃ¤ÃŸ dieser Lizenz
 * nutzen. 
 * 
 * Eine Kopie der Lizenz finden Sie hier: 
@@ -11,9 +11,9 @@
 *  
 * Sofern nicht durch anwendbare Rechtsvorschriften gefordert oder in 
 * schriftlicher Form vereinbart, wird die unter der Lizenz verbreitete 
-* Software "so wie sie ist", OHNE JEGLICHE GEWÄHRLEISTUNG ODER BEDINGUNGEN -
-* ausdrücklich oder stillschweigend - verbreitet.
-* Die sprachspezifischen Genehmigungen und Beschränkungen unter der Lizenz
+* Software "so wie sie ist", OHNE JEGLICHE GEWÃ„HRLEISTUNG ODER BEDINGUNGEN -
+* ausdrÃ¼cklich oder stillschweigend - verbreitet.
+* Die sprachspezifischen Genehmigungen und BeschrÃ¤nkungen unter der Lizenz
 * sind dem Lizenztext zu entnehmen.
 */ 
 
@@ -32,7 +32,7 @@ import org.log.StatusBar;
 /**
  * Stellt die Verbindung zur Datenbank her und stellt die einzelnen Abfragen.
  * 
- * @author René Majewski
+ * @author RenÃ© Majewski
  *
  *@version 0.1
  *@since 0.1
@@ -71,7 +71,7 @@ public class DbController {
 	}
 	
 	/**
-	 * Beendet eine offende Verbindung zur Datenbank.
+	 * Beendet eine offene Verbindung zur Datenbank.
 	 */
 	public void close() {
 		try {
@@ -83,7 +83,7 @@ public class DbController {
 	}
 	
 	/**
-	 * Gibt die Instanz des Controllers zurück. Ist noch keine Instanz
+	 * Gibt die Instanz des Controllers zurÃ¼ck. Ist noch keine Instanz
 	 * initialisiert wurden, so wird eine initialisiert.
 	 * 
 	 * @return Instanz des Controllers.
@@ -101,19 +101,19 @@ public class DbController {
 	 * im Speicher angelegt.
 	 * 
 	 * Ist die System-Einstellung "debugging" gesetzt, so wird an den
-	 * Datenbank-Namen noch "_debug" angehängt.
+	 * Datenbank-Namen noch "_debug" angehÃ¤ngt.
 	 * 
 	 * @param name Name der Datenbank
 	 */
 	public void initConnection(String name) {
-		// Überprüfen ob getestet wird
+		// ÃœberprÃ¼fen ob getestet wird
 		if (System.getProperty("testing") != null) {
 			// Beim testen nur die Datenbank im Speicher anlegen
 			_dbName = new String(":memory:");
 		} else {
-			// Überprüfen ob ein Datenbank-Name übergeben wurde
+			// ÃœberprÃ¼fen ob ein Datenbank-Name Ã¼bergeben wurde
 			if ((name != null) && !name.isEmpty()) {
-				// Überprüfen ob das Verzeichnis existiert
+				// ÃœberprÃ¼fen ob das Verzeichnis existiert
 				String home = new String();
 				
 				if ((System.getenv("APPDATA") != null) && 
@@ -132,7 +132,7 @@ public class DbController {
 				// Pfad und Name der Datenbank speichern
 				_dbName = file.getAbsolutePath();
 				
-				// Überprüfen ob debugging läuft.
+				// ÃœberprÃ¼fen ob debugging lÃ¤uft.
 				if (System.getProperty("debugging") != null)
 					_dbName += "_debug";
 			}
@@ -142,7 +142,7 @@ public class DbController {
 		if ((_dbName != null) && !_dbName.isEmpty()) {
 			try {
 				// Besteht schon eine Verbindung zur Datenbank, dann diese
-				// schließen
+				// schlieÃŸen
 				if (_connection != null)
 					_connection.close();
 				
@@ -163,7 +163,7 @@ public class DbController {
 	}
 	
 	/**
-	 * Gibt die Verbindung zur Datenbank zurück.
+	 * Gibt die Verbindung zur Datenbank zurÃ¼ck.
 	 * 
 	 * @return Verbindung zur Datenbank.
 	 */
@@ -172,9 +172,9 @@ public class DbController {
 	}
 	
 	/**
-	 * Überprüft ob eine Verbindung zur Datenbank besteht.
+	 * ÃœberprÃ¼ft ob eine Verbindung zur Datenbank besteht.
 	 * 
-	 * @return Besteht eine Verindung zur Datenbank?
+	 * @return Besteht eine Verbindung zur Datenbank?
 	 */
 	public boolean isConnection() {
 		try {
@@ -200,9 +200,9 @@ public class DbController {
 	}
 	
 	/**
-	 * Erueigt ein {@link java.sql.PreparedStatement}.
+	 * Erzeugt ein {@link java.sql.PreparedStatement}.
 	 * 
-	 * @param sql SQL-Befehl, der ausgeführt werden soll.
+	 * @param sql SQL-Befehl, der ausgefÃ¼hrt werden soll.
 	 * 
 	 * @return Erzeugtes SQL-PreparedStatement.
 	 * 
@@ -214,16 +214,16 @@ public class DbController {
 	}
 	
 	/**
-	 * Legt fest, ob der AutoCommit ausgeführt werden soll oder nicht.
+	 * Legt fest, ob der AutoCommit ausgefÃ¼hrt werden soll oder nicht.
 	 * 
-	 * @param autoCommit Soll der AutoCommit ausgeführt werden? Wird true
-	 * übergeben, soll der AutoCommit durchgeführt werden. Bei false soll er
-	 * nicht ausgeführt werden.
+	 * @param autoCommit Soll der AutoCommit ausgefÃ¼hrt werden? Wird true
+	 * Ã¼bergeben, soll der AutoCommit durchgefÃ¼hrt werden. Bei false soll er
+	 * nicht ausgefÃ¼hrt werden.
 	 *  
 	 * @throws SQLException Wird erzeugt, wenn ein Fehler beim Zugriff auf die
 	 * Datenbank stattgefunden hat.
 	 */
-	public void setAutoCOmmit(boolean autoCommit) throws SQLException {
+	public void setAutoCommit(boolean autoCommit) throws SQLException {
 		_connection.setAutoCommit(autoCommit);
 	}
 
@@ -239,11 +239,25 @@ public class DbController {
 	}
 	
 	/**
-	 * Gibt den Namen der Datenbank zurück.
+	 * Gibt den Namen der Datenbank zurÃ¼ck.
 	 * 
 	 * @return Name der Datenbank.
 	 */
 	public String getDatabaseName() {
 		return _dbName;
+	}
+	
+	/**
+	 * FÃ¼hrt den Batch-Vorgang des PreparedStatements aus.
+	 * 
+	 * @param ps PreparedStatement, dessen Batch-Vorgang ausgefÃ¼hrt werden soll.
+	 * 
+	 * @throws SQLException Wird erzeugt, wenn ein Fehler beim ausfÃ¼hren des
+	 * Batch-Vorgangs auftritt.
+	 */
+	public void executeBatch(PreparedStatement ps) throws SQLException {
+		setAutoCommit(false);
+		ps.executeBatch();
+		setAutoCommit(true);
 	}
 }

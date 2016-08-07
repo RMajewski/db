@@ -1,9 +1,9 @@
 /* 
-* Copyright 2016 René Majewski
+* Copyright 2016 RenÃ© Majewski
 *  
 * Lizenziert unter der EUPL, Version 1.1 oder - sobald diese von der
-* Europäischen Kommission genehmigt wurden - Folgeversionen der EUPL
-* ("Lizenz"); Sie dürfen dieses Werk ausschließlich gemäß dieser Lizenz
+* EuropÃ¤ischen Kommission genehmigt wurden - Folgeversionen der EUPL
+* ("Lizenz"); Sie dÃ¼rfen dieses Werk ausschlieÃŸlich gemÃ¤ÃŸ dieser Lizenz
 * nutzen. 
 * 
 * Eine Kopie der Lizenz finden Sie hier: 
@@ -11,9 +11,9 @@
 *  
 * Sofern nicht durch anwendbare Rechtsvorschriften gefordert oder in 
 * schriftlicher Form vereinbart, wird die unter der Lizenz verbreitete 
-* Software "so wie sie ist", OHNE JEGLICHE GEWÄHRLEISTUNG ODER BEDINGUNGEN -
-* ausdrücklich oder stillschweigend - verbreitet.
-* Die sprachspezifischen Genehmigungen und Beschränkungen unter der Lizenz
+* Software "so wie sie ist", OHNE JEGLICHE GEWÃ„HRLEISTUNG ODER BEDINGUNGEN -
+* ausdrÃ¼cklich oder stillschweigend - verbreitet.
+* Die sprachspezifischen Genehmigungen und BeschrÃ¤nkungen unter der Lizenz
 * sind dem Lizenztext zu entnehmen.
 */ 
 
@@ -24,7 +24,7 @@ package org.db.main;
  * Abfrage-Klasse mindestens enthalten sein sollen. So etwa, createTable,
  * insert, delete und update.
  * 
- * @author René Majewski
+ * @author RenÃ© Majewski
  *
  * @version 0.1
  * @since 0.1
@@ -38,36 +38,36 @@ public interface QueryInterface {
 	public String createTable();
 	
 	/**
-	 * Erzeugt die SQL-Abfrage, um einen Datensatz in die Tabelle einzufügen.
-	 * Für die Daten werden "?" als Platzhalter benutzt.
+	 * Erzeugt die SQL-Abfrage, um einen Datensatz in die Tabelle einzufÃ¼gen.
+	 * FÃ¼r die Daten werden "?" als Platzhalter benutzt.
 	 * 
-	 * @return SQL-Abfrage, um einen Datensatz in die Tabelle einzufügen.
+	 * @return SQL-Abfrage, um einen Datensatz in die Tabelle einzufÃ¼gen.
 	 */
 	public String insert();
 	
 	/**
-	 * Erzeugt die SQL-Abfrage zum löschen des angegebenen Datensatzes.
+	 * Erzeugt die SQL-Abfrage zum lÃ¶schen des angegebenen Datensatzes.
 	 * 
-	 * @param id ID des Datensatzes, der gelöscht werden soll.
+	 * @param id ID des Datensatzes, der gelÃ¶scht werden soll.
 	 * 
-	 * @return SQL-Abfrage zum löschen des angegebenen Datensatzes.
+	 * @return SQL-Abfrage zum lÃ¶schen des angegebenen Datensatzes.
 	 */
 	public String delete(int id);
 	
 	/**
-	 * Erstellt die SQL-Abfrage zum ändern des angegebenen Datensatzes. Für die
+	 * Erstellt die SQL-Abfrage zum Ã¤ndern des angegebenen Datensatzes. FÃ¼r die
 	 * Daten werden "?" als Platzhalter benutzt.
 	 * 
-	 * @param id ID des Datensatzes, der geändert werden soll.
+	 * @param id ID des Datensatzes, der geÃ¤ndert werden soll.
 	 * 
-	 * @return SQL-Abfrage zum ändern des angegebenen Datensatzes.
+	 * @return SQL-Abfrage zum Ã¤ndern des angegebenen Datensatzes.
 	 */
 	public String update(int id);
 	
 	/**
-	 * Erzeugt die SQL-Abfrage zum zurückgeben aller Datensätze.
+	 * Erzeugt die SQL-Abfrage zum zurÃ¼ckgeben aller DatensÃ¤tze.
 	 * 
-	 * @return SQL-Abfrage zur Ausgabe alle Datensätze.
+	 * @return SQL-Abfrage zur Ausgabe alle DatensÃ¤tze.
 	 */
 	public String select();
 	
@@ -101,62 +101,71 @@ public interface QueryInterface {
 	public String search(String col, int number);
 	
 	/**
-	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze.
+	 * Erstellt die SQL-Abfrage zum sortieren der DatensÃ¤tze.
 	 * 
 	 * @param col Name der Spalte, nach der sortiert werden soll
 	 * 
-	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren
+	 * @return Datenbank-Abfrage, um die DatensÃ¤tze zu sortieren
 	 */
 	public String sort(String col);
 	
 	/**
-	 * Erzeugt die Meldung, dass ein Datensatz richtig eingefügt wurde.
+	 * Erstellt die SQL-Abfrage zum sortieren der DatensÃ¤tze.
 	 * 
-	 * @return Meldung: Datensatz wurde hinzugefügt.
+	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, um die DatensÃ¤tze zu sortieren.
+	 */
+	public String sort(String[] cols);
+	
+	/**
+	 * Erzeugt die Meldung, dass ein Datensatz richtig eingefÃ¼gt wurde.
+	 * 
+	 * @return Meldung: Datensatz wurde hinzugefÃ¼gt.
 	 */
 	public String statusInsertOk();
 	
 	/**
-	 * Erzeugt die Meldung, dass ein Datensatz nicht eingefügt wurde.
+	 * Erzeugt die Meldung, dass ein Datensatz nicht eingefÃ¼gt wurde.
 	 * 
-	 * @return Meldung: Datensatz konnte nicht eingefügt werden
+	 * @return Meldung: Datensatz konnte nicht eingefÃ¼gt werden
 	 */
 	public String statusInsertError();
 	
 	/**
-	 * Erzeugt die Meldung, dass der angegebene Datensatz geändert wurde.
+	 * Erzeugt die Meldung, dass der angegebene Datensatz geÃ¤ndert wurde.
 	 * 
-	 * @param id ID des Datensatzes, der geändert wurde.
+	 * @param id ID des Datensatzes, der geÃ¤ndert wurde.
 	 * 
-	 * @return Meldung: Datensatz wurde geändert
+	 * @return Meldung: Datensatz wurde geÃ¤ndert
 	 */
 	public String statusUpdateOk(int id);
 	
 	/**
-	 * Erzeugt die Meldung, dass der angegebene Datensatz nicht geändert werden
+	 * Erzeugt die Meldung, dass der angegebene Datensatz nicht geÃ¤ndert werden
 	 * konnte.
 	 * 
-	 * @param id ID des Datensatzes, der nicht geändert werden konnte.
+	 * @param id ID des Datensatzes, der nicht geÃ¤ndert werden konnte.
 	 * 
-	 * @return Meldung: Datensatz konnte nicht geändert werden
+	 * @return Meldung: Datensatz konnte nicht geÃ¤ndert werden
 	 */
 	public String statusUpdateError(int id);
 	
 	/**
-	 * Erzeugt die Meldung, dass der angegebene Datensatz gelöscht wurde.
+	 * Erzeugt die Meldung, dass der angegebene Datensatz gelÃ¶scht wurde.
 	 * 
-	 * @param id ID des Datensatzes, der gelöscht wurde.
+	 * @param id ID des Datensatzes, der gelÃ¶scht wurde.
 	 * 
-	 * @return Meldung: Datensatz wurde gelöscht
+	 * @return Meldung: Datensatz wurde gelÃ¶scht
 	 */
 	public String statusDeleteOk(int id);
 	
 	/**
-	 * Erzeugt die Meldung, dass der Datensatz nicht gelöscht werden konnte.
+	 * Erzeugt die Meldung, dass der Datensatz nicht gelÃ¶scht werden konnte.
 	 * 
-	 * @param id ID des Datensatzes, der nicht gelöscht werden konnte.
+	 * @param id ID des Datensatzes, der nicht gelÃ¶scht werden konnte.
 	 * 
-	 * @return Meldung: Datensatz konnte nicht gelöscht werden.
+	 * @return Meldung: Datensatz konnte nicht gelÃ¶scht werden.
 	 */
 	public String statusDeleteError(int id);
 }
