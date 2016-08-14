@@ -69,4 +69,32 @@ public class Data {
 	public int getId() {
 		return _id;
 	}
+	
+	/**
+	 * Überprüft, das übergebene Objekt, ob es gleich mit diesem ist.
+	 * 
+	 * Wenn obj == null ist, wird false zurückgegeben. Wenn obj == this ist,
+	 * wird true zurückgegeben. Wenn obj keine Data-Klasse ist, so wird false
+	 * zurückgegeben. Wenn die ID dieses Datensatzes und des übergebenen
+	 * Objektes gleich ist, wird true zurückgegeben.
+	 * 
+	 * @param obj Objekt, was mit diesem hier verglichen werden soll.
+	 * 
+	 * @return Ist das übergebene Objekt gleich diesem? Wenn ja, wird true
+	 * zurückgegeben. Wenn nein, false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		
+		if (obj == this)
+			return true;
+		
+		if (!getClass().equals(obj.getClass()))
+			return false;
+		
+		Data data = (Data)obj;
+		return _id == data.getId();
+	}
 }

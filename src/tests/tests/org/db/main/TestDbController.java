@@ -30,6 +30,7 @@ import java.sql.SQLException;
 
 import org.db.main.DbController;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.log.LogData;
@@ -49,6 +50,14 @@ public class TestDbController {
 	@BeforeClass
 	public static void setUpClass() {
 		System.setProperty("testing", "true");
+	}
+	
+	/**
+	 * Initialisiert die einzelnen Tests.
+	 */
+	@Before
+	public void setUp() {
+		DbController.getInstance().initConnection(":memory:");
 	}
 	
 	/**
@@ -184,6 +193,7 @@ public class TestDbController {
 	/**
 	 * Überprüft, ob prepareStatement(String) eine Instanz der Klasse
 	 * org.sqlite.jdbc4.JDBC4PreparedStatement zurück gibt.
+	 * 
 	 * @throws SQLException Wird ausgelöst, wenn ein Fehler beim Zugriff auf
 	 * die Datenbank auftritt. 
 	 * 

@@ -224,6 +224,7 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * 
 	 * @return Datenbank-Abfrage um neuen Datensatz einzufügen
 	 */
+	// OPT Diese mit der Methode insert(boolean, boolean) zusammenlegen.
 	public String insertWithId() {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("INSERT INTO ");
@@ -410,6 +411,7 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
 	 * werden soll.
 	 */
+	/// @todo Such-Methoden auch für boolean, long und double hinzufügen.
 	@Override
 	public String search(String col, int search) {
 		// Abfrage vorbereiten

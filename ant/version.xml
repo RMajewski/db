@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="version">
+	<!-- Erhöht die Major-Version um eins -->
+	<target name="nextMajorVersion">
+		<!-- Folgende Properties müssen gesetzt sein:
+				- version.file: Datei, in der die Version steht
+				- version.header: Beschreibung der Datei -->
+		<propertyfile file="${version.file}" comment="${version.header}">
+			<entry key="version.major" type="int" operation="+"  default="0"/>
+			<entry key="version.minor" type="int" value="0"/>
+			<entry key="version.patch" type="int" value="0"/>
+			<entry key="version.build" type="int" operation="=" default="0"/>
+			<entry key="version.date" type="date" value="now" />
+		</propertyfile>
+	</target>
+	
+	<!-- Erhöht die Minor-Version um eins -->
+	<target name="nextMinorVersion">
+		<!-- Folgende Properties müssen gesetzt sein:
+				- version.file: Datei, in der die Version steht
+				- version.header: Beschreibung der Datei -->
+		<propertyfile file="${version.file}" comment="${version.header}">
+			<entry key="version.major" type="int" operation="="  default="0"/>
+			<entry key="version.minor" type="int" operation="+"  default="1"/>
+			<entry key="version.patch" type="int" value="0"/>
+			<entry key="version.build" type="int" operation="=" default="0"/>
+			<entry key="version.date" type="date" value="now" />
+		</propertyfile>
+	</target>
+	
+	<!-- Erhöht die Patch-Nummer um eins -->
+	<target name="nextPatchNumber">
+		<!-- Folgende Properties müssen gesetzt sein:
+				- version.file: Datei, in der die Version steht
+				- version.header: Beschreibung der Datei -->
+		<propertyfile file="${version.file}" comment="${version.header}">
+			<entry key="version.major" type="int" operation="="  default="0"/>
+			<entry key="version.minor" type="int" operation="="  default="1"/>
+			<entry key="version.patch" type="int" operation="+"  default="0"/>
+			<entry key="version.build" type="int" operation="=" default="0"/>
+			<entry key="version.date" type="date" value="now" />
+		</propertyfile>
+	</target>
+	
+	<!--  Erhöht die Build-Nummer um eins -->
+	<target name="nextBuildNumber">
+		<!-- Folgende Properties müssen gesetzt sein:
+				- version.file: Datei, in der die Version steht
+				- version.header: Beschreibung der Datei -->
+		<propertyfile file="${version.file}" comment="${version.header}">
+			<entry key="version.major" type="int" operation="="  default="0"/>
+			<entry key="version.minor" type="int" operation="="  default="1"/>
+			<entry key="version.patch" type="int" operation="="  default="0"/>
+			<entry key="version.build" type="int" operation="+" default="0"/>
+			<entry key="version.date" type="date" value="now" />
+		</propertyfile>
+	</target>
+	
+	<!-- Liest die Version ein, erhöht die Patch-Nummer und erstellt den
+	Version-String -->
+	<target name="version" depends="nextBuildNumber">
+		<!-- Ist ein Alias für nextBuildNumber -->
+	</target>
+</project>

@@ -75,8 +75,10 @@ public class DbController {
 	 */
 	public void close() {
 		try {
-			if ((_connection != null) && !_connection.isClosed())
+			if ((_connection != null) && !_connection.isClosed()) {
 				_connection.close();
+				_connection = null;
+			}
 		} catch (SQLException e) {
 			StatusBar.getInstance().setMessage(statusDbError(e));
 		}
@@ -107,7 +109,8 @@ public class DbController {
 	 */
 	public void initConnection(String name) {
 		// Überprüfen ob getestet wird
-		if (System.getProperty("testing") != null) {
+		if ((System.getProperty("testing") != null) ||
+				name.equals(":memory:")) {
 			// Beim testen nur die Datenbank im Speicher anlegen
 			_dbName = new String(":memory:");
 		} else {
@@ -143,8 +146,10 @@ public class DbController {
 			try {
 				// Besteht schon eine Verbindung zur Datenbank, dann diese
 				// schließen
-				if (_connection != null)
+				if (_connection != null) {
 					_connection.close();
+					_connection = null;
+				}
 				
 				// Verbindung zur Datenbank herstellen
 				_connection = DriverManager.getConnection("jdbc:sqlite:" + 

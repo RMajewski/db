@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Ant-Setup-Datei für das Projekt "Datenbank-Controller"-->
+<project name="Db" default="main" basedir=".">
+	<!-- Task laden -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml"
+			 classpath="${user.home}/.ant/lib/ant-contrib-1.0b3.jar" />
+	
+	<!-- Version -->
+	<property name="version.file" location=".version"/>
+	<property name="version.header">!!!Dies ist eine automatisch generierte Datei - es dürfen keine Änderungen vorgenommen werden !!!${file.separator}#In dieser Datei stehen die Versions-Informationen für das Inventar-Plugin Gewicht.</property>
+	<include file="ant/version.xml"/>
+	<var name="version.buildnumber" value="no" />
+	<target name="build">
+		<if>
+			<equals arg1="${version.buildnumber}" arg2="no" />
+			<then>
+				<antcall target="version.version" />
+				<property file="${version.file}" />
+				<property name="version" value="${version.major}.${version.minor}.${version.patch}" />
+				<property name="version.full" value="${version}-b${version.build}" />
+				<property name="jar.lib" value="db-${version.full}.jar"/>
+				<var name="version.buildnumber" value="yes" />
+			</then>
+		</if>
+	</target>
+	
+	<!--Verzeichnisse-->
+	<property name="src.dir" location="src" />
+	<property name="dist.dir" location="dist" />
+	<property name="build.dir" location="${dist.dir}/classes" />
+	<property name="docs.dir" location="doc" />
+	<property name="report.dir" location="reports" />
+	<property name="report.junit" location="${report.dir}/junit" />
+	<property name="report.junit.work" location="${report.junit}/works" />
+	<property name="report.fit" location="${report.dir}/fit" />
+	
+	<!-- Sonstige Einstellungen -->
+	<var name="dir.clean" value="no" />
+	<var name="dir.makedir" value="no" />
+	
+	<!--Angabe des Klassenpfad für java-->
+	<path id="build.classpath">
+		<pathelement path="${java.class.path}" />
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="C:\Users\René Majewski\.p2\pool\plugins\org.junit_4.12.0.v201504281640">
+			<filename name="junit.jar" />
+		</fileset>
+		<pathelement path="${build.dir}" />
+	</path>
+
+	<!--Löschen der Arbeitsverzeichnisse -->
+	<target name="clean">
+		<if>
+			<equals arg1="${dir.clean}" arg2="no" />
+			<then>
+				<delete dir="${build.dir}" />
+				<delete dir="${dist.dir}" />
+				<delete dir="${docs.dir}" />
+				<delete dir="${report.dir}" />
+				<var name="dir.clean" value="yes" />
+			</then>
+		</if>
+	</target>
+	
+	<!--Erzeugen der Arbeitsverzeichnisse -->
+	<target name="makedir">
+		<if>
+			<equals arg1="${dir.makedir}" arg2="no" />
+			<then>
+				<mkdir dir="${build.dir}" />
+				<mkdir dir="${report.junit.work}" />
+				<mkdir dir="${report.fit}" />
+				<var name="dir.makedir" value="yes"/>
+			</then>
+		</if>
+	</target>
+	
+	<!--Kompelieren-->
+	<target name="compile" depends="clean, makedir">
+		<javac destdir="${build.dir}"
+			   classpathref="build.classpath"
+			   includeantruntime="false"
+			   debug="on"
+			   encoding="UTF-8"> <!-- Wichtig für Windows -->
+			<src path="${src.dir}"/>
+			<exclude name="**/package-info.java"/>
+		</javac>
+	</target>
+	
+	<!--Jars erzeugen-->
+	<target name="db" depends="build, compile">
+		<jar destfile="${dist.dir}/${jar.lib}">
+			<fileset dir="${build.dir}" >
+				<include name="**/db/**/*.class" />
+				<exclude name="**/Test*.class" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**/db/**/*.java" />
+				<exclude name="**/tests/**/*.java" />
+			</fileset>
+			<manifest>
+				<attribute name="Class-Path" value="sqlite-jdbc-3.8.11.2.jar" />
+				<attribute name="Built-By" value="René Majewski" />
+				<attribute name="sealed" value="true" />
+				<section name="org.db">
+					<attribute name="Specification-Title" value="Datenbank-Controller" />
+					<attribute name="Specification-Version" value="${version}" />
+					<attribute name="Specification-Verndor" value="René Majewski" />
+					<attribute name="Implementation-Title" value="org.db" />
+					<attribute name="Implementation-Version" value="${version}-b${build.number}" />
+					<attribute name="Implementation-Vendor" value="René Majewski" />
+				</section>
+			</manifest>
+		</jar>
+	</target>
+	
+	<!-- Main -->
+	<target name="main" depends="db">
+		<description>Kompeliert die einzelnen Klasse und erstellt die
+		JAR-Datei.</description>
+	</target>
+	
+	<!-- Junit-Tests ausführen -->
+	<target name="junit" depends="clean, makedir, compile">
+		<description>junit-Tests</description>
+		<junit fork="on" forkmode="perTest">
+			<classpath refid="build.classpath">
+			</classpath>
+			<jvmarg value="-Dtesting=true"/>
+			<batchtest todir="${report.junit.work}">
+				<fileset dir="${src.dir}/tests" includes="**/Test*.java" />
+				<formatter type="xml" />
+			</batchtest>
+		</junit>
+		<junitreport todir="${report.junit.work}">
+			<fileset dir="${report.junit.work}" includes="**/*.xml" />
+			<report format="frames" todir="${report.junit}" />
+		</junitreport>
+	</target>
+</project>
