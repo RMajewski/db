@@ -508,6 +508,9 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * Gibt die Status-Nachricht fürs Einfügen eines Datensatzes zurück.
 	 * 
 	 * @return Status-Nachricht fürs Einfügen eines Datensatzes
+	 * 
+	 * @deprecated Wird durch {@link org.db.main.DbStatus#insertInTable(String)}
+	 * ersetzt.
 	 */
 	@Override
 	public String statusInsertOk() {
@@ -525,6 +528,9 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * kann.
 	 * 
 	 * @return Status-Nachricht, wenn Datensatz nicht eingefügt werden konnte.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notInsertInTable(String, Exception)} ersetzt.
 	 */
 	@Override
 	public String statusInsertError() {
@@ -541,6 +547,9 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * Erzeugt die Status-Nachricht, fürs ändern einen Datensatzes.
 	 * 
 	 * @return Status-Nachricht, wenn Datensatz geändert wurde.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#updateInTable(String, int)} ersetzt.
 	 */
 	@Override
 	public String statusUpdateOk(int id) {
@@ -561,6 +570,10 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * kann.
 	 * 
 	 * @return Status-Nachricht, wenn Datensatz nicht geändert werden konnte
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notUpdateInTable(String, int, Exception)}
+	 * ersetzt.
 	 */
 	@Override
 	public String statusUpdateError(int id) {
@@ -580,6 +593,9 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * Erzeugt die Status-Nachricht, wenn ein Datensatz gelöscht wurde.
 	 * 
 	 * @return Status-Nachricht, wenn Datensatz gelöscht wurde.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#deleteFromTable(String, int)} ersetzt.
 	 */
 	@Override
 	public String statusDeleteOk(int id) {
@@ -600,6 +616,10 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * konnte.
 	 * 
 	 * @return Status-Nachricht, wenn Datensatz nicht gelöscht werden konnte.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notDeleteFromTable(String, int, Exception)}
+	 * ersetzt.
 	 */
 	@Override
 	public String statusDeleteError(int id) {

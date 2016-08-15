@@ -317,7 +317,11 @@ public class TestAbstractQuery {
 
 	/**
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
-	 * Test method for {@link org.db.main.AbstractQuery#statusInsertOk()}.
+	 * 
+	 * @see org.db.main.AbstractQuery#statusInsertOk()
+	 * 
+	 * @deprecated Wird durch {@link org.db.main.DbStatus#insertInTable(String)}
+	 * ersetzt.
 	 */
 	@Test
 	public void testStatusInsertOk() {
@@ -329,6 +333,9 @@ public class TestAbstractQuery {
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
 	 * 
 	 * @see org.db.main.AbstractQuery#statusInsertError()
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notInsertInTable(String, Exception)} ersetzt.
 	 */
 	@Test
 	public void testStatusInsertError() {
@@ -340,6 +347,9 @@ public class TestAbstractQuery {
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
 	 * 
 	 * @see org.db.main.AbstractQuery#statusUpdateOk(int)
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#updateInTable(String, int)} ersetzt.
 	 */
 	@Test
 	public void testStatusUpdateOk() {
@@ -353,6 +363,10 @@ public class TestAbstractQuery {
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
 	 * 
 	 * @see org.db.main.AbstractQuery#statusUpdateError(int)
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notUpdateInTable(String, int, Exception)}
+	 * ersetzt.
 	 */
 	@Test
 	public void testStatusUpdateError() {
@@ -366,6 +380,9 @@ public class TestAbstractQuery {
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
 	 * 
 	 * @see org.db.main.AbstractQuery#statusDeleteOk(int)
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#deleteFromTable(String, int)} ersetzt.
 	 */
 	@Test
 	public void testStatusDeleteOk() {
@@ -379,6 +396,10 @@ public class TestAbstractQuery {
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
 	 * 
 	 * @see org.db.main.AbstractQuery#statusDeleteError(int)
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notDeleteFromTable(String, int, Exception)}
+	 * ersetzt.
 	 */
 	@Test
 	public void testStatusDeleteError() {
