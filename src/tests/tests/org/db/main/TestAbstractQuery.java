@@ -59,12 +59,10 @@ public class TestAbstractQuery {
 	@Before
 	public void setUp() {
 		_id = "id";
-		_dsc = "description";
+		_dsc = "test";
 		_tableName = "test";
 		
 		_test = new AbstractQueryImpl(_tableName);
-		_test.getColumnNames().add(_id);
-		_test.getColumnNames().add(_dsc);
 	}
 
 	/**

@@ -102,7 +102,7 @@ public class DbStatus {
 	///@todo Test hinzufügen
 	public static LogData notCreateTableMessage(String table, Exception error) {
 		return LogData.messageError("Datenbank: Die Tabelle '" + table + 
-				"' wurde erstellt.", error);
+				"' konnte nicht erstellt werden.", error);
 	}
 	
 	/**
@@ -203,8 +203,8 @@ public class DbStatus {
 	///@todo Test hinzufügen
 	public static LogData notInsertInTableMessage(String table,
 			Exception error) {
-		return LogData.messageError("Datenbank: In die Tabelle '" + table + 
-				"' konnte kein Datensatz eingefügt werden.", error);
+		return LogData.messageError("Datenbank: Der Datensatz konnte " +
+				"nicht in die Tabelle '" + table +"' eingefügt werden", error);
 	}
 	
 	/**

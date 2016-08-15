@@ -786,6 +786,8 @@ public abstract class AbstractQuery implements Queryable {
 	 * Erzeugt die Status-Nachricht, wenn der Datensatz nicht geändert werden
 	 * kann.
 	 * 
+	 * @param id ID des Datensatzes, der nicht geändert werden konnte.
+	 * 
 	 * @return Status-Nachricht, wenn Datensatz nicht geändert werden konnte
 	 * 
 	 * @deprecated Wurde durch
@@ -808,6 +810,8 @@ public abstract class AbstractQuery implements Queryable {
 	/**
 	 * Erzeugt die Status-Nachricht, wenn ein Datensatz gelöscht wurde.
 	 * 
+	 * @param id ID des Datensatzes, der gelöscht wurde.
+	 * 
 	 * @return Status-Nachricht, wenn Datensatz gelöscht wurde.
 	 * 
 	 * @deprecated Wurde durch
@@ -829,6 +833,8 @@ public abstract class AbstractQuery implements Queryable {
 	/**
 	 * Erzeugt die Status-Nachricht, wenn ein Datensatz nicht gelöscht werden
 	 * konnte.
+	 * 
+	 * @param id ID des Datensatzes, der nicht gelöscht werden konnte.
 	 * 
 	 * @return Status-Nachricht, wenn Datensatz nicht gelöscht werden konnte.
 	 * 

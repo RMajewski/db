@@ -291,9 +291,12 @@ public class DbController {
 	 * @param message Nachricht, die beim auftreten des Fehlers SQLException
 	 * ausgegeben werden soll. Wird null übergeben, so wird eine standard
 	 * Nachricht ausgegeben.
+	 * 
+	 * @return Wurde die SQL-Abfrage richtig ausgeführt? Wenn ja, wird true
+	 * zurückgegeben. Wenn nicht, dann false.
 	 */
 	///@todo Test für diese Methode einfügen
-	public void sql(String sql, LogData message) {
+	public boolean sql(String sql, LogData message) {
 		if ((sql == null) || sql.isEmpty())
 			throw new IllegalArgumentException(
 					"Die SQL-Abfrage muss angegeben sein!");
@@ -307,7 +310,10 @@ public class DbController {
 				message.setError(LogData.createError(e));
 				StatusBar.getInstance().setMessage(message);
 			}
+			return false;
 		}
+		
+		return true;
 	}
 
 	/**
@@ -319,8 +325,10 @@ public class DbController {
 		if (query == null)
 			throw new IllegalArgumentException(
 					"Die Abfrage muss übergeben werden.");
-		sql(query.createTable(), DbStatus.notCreateTableMessage(
-				query.getTableName(), null));
+		
+		if (sql(query.createTable(), DbStatus.notCreateTableMessage(
+				query.getTableName(), null)))
+			DbStatus.createTable(query.getTableName());
 	}
 
 	/**
@@ -365,7 +373,53 @@ public class DbController {
 			throw new IllegalArgumentException(
 					"Die Abfrage muss übergeben werden.");
 		
-		sql(query.insert(data), DbStatus.notInsertInTableMessage(
-				query.getTableName(), null));
+		if (data == null)
+			throw new IllegalArgumentException(
+					"Der Datensatz muss übergeben werden.");
+		
+		if (sql(query.insert(data), DbStatus.notInsertInTableMessage(
+				query.getTableName(), null)))
+			DbStatus.insertInTable(query.getTableName());
+	}
+
+	/**
+	 * Löscht den Datensatz mit der angegebenen ID.
+	 * 
+	 * @param query Abfrage, die von Queryable abgeleitet wurde.
+	 * 
+	 * @param id ID des Datensatzes, der gelöscht werden soll.
+	 */
+	public void delete(Queryable query, int id) {
+		if (query == null)
+			throw new IllegalArgumentException(
+					"Die Abfrage muss übergeben werden.");
+		
+		if (id <= 0)
+			throw new IllegalArgumentException("Die ID muss größer 0 sein.");
+		
+		if (sql(query.delete(id), DbStatus.notDeleteFromTableMessage(
+				query.getTableName(), id, null)))
+			DbStatus.deleteFromTable(query.getTableName(), id);
+	}
+
+	/**
+	 * Speichert die Änderung des angegebenen Datensatzes in die Datenbank.
+	 * 
+	 * @param query Abfrage, die von Queryable abgeleitet wurde.
+	 * 
+	 * @param data Datensatz, der geändert werden soll.
+	 */
+	public void update(Queryable query, Data data) {
+		if (query == null)
+			throw new IllegalArgumentException(
+					"Die Abfrage muss übergeben werden.");
+		
+		if (data == null)
+			throw new IllegalArgumentException(
+					"Der Datensatz muss angegeben werden.");
+		
+		if (sql(query.update(data), DbStatus.notUpdateInTableMessage(
+				query.getTableName(), data.getId(), null)))
+			DbStatus.updateInTable(query.getTableName(), data.getId());
 	}
 }

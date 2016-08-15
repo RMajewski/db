@@ -175,8 +175,8 @@ public class TestDbStatus {
 	public void testNotInsertInTable() {
 		DbStatus.notInsertInTable(_tableName, _error);
 		
-		testError("Datenbank: In die Tabelle '" + _tableName +
-				"' konnte kein Datensatz eingefügt werden.", _errorMessage);
+		testError("Datenbank: Der Datensatz konnte nicht in die Tabelle '" +
+				_tableName +"' eingefügt werden", _errorMessage);
 	}
 
 	/**

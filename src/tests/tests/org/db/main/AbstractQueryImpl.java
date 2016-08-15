@@ -74,7 +74,7 @@ public class AbstractQueryImpl extends AbstractQuery {
 	@Override
 	public String createTable() {
 		if (_error)
-			return "CREATE TABLE WHERE" + getTableName() + 
+			return "INSERT TABLE IF NOT EXISTS" + getTableName() + 
 					"('id' INTEGER, 'test' STRING)";
 		else
 			return "CREATE TABLE IF NOT EXISTS " + getTableName() + 
@@ -88,12 +88,19 @@ public class AbstractQueryImpl extends AbstractQuery {
 	 */
 	@Override
 	public String insert(Data data) {
-		String result = insert();
+		StringBuilder result = new StringBuilder(insert(true, true));
+		
+		result.replace(result.indexOf("?"), result.indexOf("?") + 1,
+				String.valueOf(data.getId()));
+		
+		result.replace(result.indexOf("?"), result.indexOf("?") + 1,
+				"Dies ist ein Test!");
 		
 		if (_error)
-			result.replace("test", "test3");
+			result.replace(result.indexOf("test"), result.indexOf("test") + 4,
+					"test3");
 		
-		return result;
+		return result.toString();
 	}
 
 	/**
@@ -103,12 +110,29 @@ public class AbstractQueryImpl extends AbstractQuery {
 	 */
 	@Override
 	public String update(Data data) {
-		String result = update(data.getId());
+		StringBuilder result = new StringBuilder(update(data.getId()));
+		
+		result.replace(result.indexOf("?"), result.indexOf("?") + 1,
+				"Dies ist ein Test!");
 		
 		if (_error)
-			result.replace("id", "test");
+			result.replace(result.indexOf("id"), result.indexOf("id") + 2,
+					"test3");
 		
-		return result;
+		return result.toString();
 	}
 
+	/**
+	 * Löscht den angegebenen Datensatz. Es wird eine Variante hinzugefügt, die
+	 * die SQLException auslöst.
+	 * 
+	 * @param id ID des Datensatzes, der gelöscht werden soll.
+	 */
+	@Override
+	public String delete(int id) {
+		if (_error)
+			return super.delete(id).replace("id", "testen");
+		
+		return super.delete(id);
+	}
 }

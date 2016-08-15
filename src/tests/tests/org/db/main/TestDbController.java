@@ -30,6 +30,7 @@ import java.sql.SQLException;
 
 import org.db.datas.Data;
 import org.db.main.DbController;
+import org.db.main.DbStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -76,6 +77,8 @@ public class TestDbController {
 	/**
 	 * Status-Nachricht für Datenbank-Fehler darf nicht <b>null</b> oder eine
 	 * leere Zeichenkette sein.
+	 * 
+	 * @deprecated Wurde durch {@link DbStatus#errorDatabase(Exception) ersetzt.}
 	 */
 	@Test
 	public void testStatusDbErrorNotNullAndNotEmpty() {
@@ -301,7 +304,7 @@ public class TestDbController {
 	 * Überprüft, ob count ausgeführt wird und das richtige Ergebnis
 	 * zurückgegeben wird.
 	 * 
-	 * @see org.db.main.DbController#count(org.db.main.AbstractQuery)
+	 * @see org.db.main.DbController#count(org.db.main.Queryable)
 	 */
 	@Test
 	public void testCount() {
@@ -316,7 +319,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException ausgelöst wird, wenn
 	 * null übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#count(org.db.main.AbstractQuery)
+	 * @see org.db.main.DbController#count(org.db.main.Queryable)
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testCountWithNullAsParameter() {
@@ -327,7 +330,7 @@ public class TestDbController {
 	 * Überprüft, ob ein SQL-Fehler auftritt und abgefangen, wenn ein Fehler
 	 * in der count-Abfrage auftritt.
 	 * 
-	 * @see org.db.main.DbController#count(org.db.main.AbstractQuery)
+	 * @see org.db.main.DbController#count(org.db.main.Queryable)
 	 */
 	@Test
 	public void testCountWithSqlError() {
@@ -346,7 +349,7 @@ public class TestDbController {
 	/**
 	 * Überprüft, ob die Tabelle angelegt werden konnte.
 	 * 
-	 * @see org.db.main.DbController#createTable(org.db.main.AbstractQuery)
+	 * @see org.db.main.DbController#createTable(org.db.main.Queryable)
 	 */
 	@Test
 	public void testCreateTable() {
@@ -354,7 +357,7 @@ public class TestDbController {
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().createTable(query);
 		LogData log = LogData.message("Datenbank: Die Tabelle '" + table +
-				"' wurde erzeugt.", "");
+				"' wurde erstellt.", "");
 		
 		assertThat(StatusBar.getInstance().getLog().size(), is(1));
 		assertThat(StatusBar.getInstance().getLog().get(0), is(log));
@@ -364,7 +367,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException ausgelöst wird, wenn
 	 * null als Parameter übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#createTable(org.db.main.AbstractQuery)
+	 * @see org.db.main.DbController#createTable(org.db.main.Queryable)
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateTableWithNullAsParameter() {
@@ -375,15 +378,16 @@ public class TestDbController {
 	 * Überprüft, ob SQLException abgefangen wird, wenn er auftritt und ob eine
 	 * Fehlermeldung ausgegeben wird.
 	 * 
-	 * @see org.db.main.DbController#createTable(org.db.main.AbstractQuery)
+	 * @see org.db.main.DbController#createTable(org.db.main.Queryable)
 	 */
 	@Test
 	public void testCreateTableWithSqlEception() {
 		String table = "test";
 		AbstractQueryImpl query = new AbstractQueryImpl(table, true);
 		DbController.getInstance().createTable(query);
+		
 		LogData log = LogData.messageError("Datenbank: Die Tabelle '" + table +
-				"' konnte nicht erzeugt werden. ",
+				"' konnte nicht erstellt werden.",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
 		assertThat(StatusBar.getInstance().getLog().size(), is(1));
@@ -393,7 +397,7 @@ public class TestDbController {
 	/**
 	 * Überprüft, ob der angegebene Datensatz gelöscht werden konnte.
 	 * 
-	 * @see org.db.main.DbController#delete(org.db.main.AbstractQuery, int)
+	 * @see org.db.main.DbController#delete(org.db.main.Queryable, int)
 	 */
 	@Test
 	public void testDelete() {
@@ -406,22 +410,23 @@ public class TestDbController {
 		assertThat(DbController.getInstance().count(query), is(1));
 		
 		DbController.getInstance().delete(query, data.getId());
-
+		
 		assertThat(DbController.getInstance().count(query), is(0));
 		
-		LogData log = LogData.message("Der Datensatz mit der ID " +
-				data.getId() + " wurde aus der Tabelle '" + table + "'gelöscht",
+		LogData log = LogData.message("Datenbank: Der Datensatz mit der ID " +
+				data.getId() + " wurde aus der Tabelle '" + table +
+				"' gelöscht.",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
-		assertThat(StatusBar.getInstance().getLog().size(), is(1));
-		assertThat(StatusBar.getInstance().getLog().get(0), is(log));
+		assertThat(StatusBar.getInstance().getLog().size(), is(3));
+		assertThat(StatusBar.getInstance().getLog().get(2), is(log));
 	}
 	
 	/**
 	 * Überprüft ob der Fehler IllegalArgumentException auftritt, wenn null
 	 * als Parameter übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#delete(org.db.main.AbstractQuery, int)
+	 * @see org.db.main.DbController#delete(org.db.main.Queryable, int)
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testDeleteWithNullAsParameter() {
@@ -432,7 +437,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException auftritt, wenn 0 als
 	 * ID übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#delete(org.db.main.AbstractQuery, int)
+	 * @see org.db.main.DbController#delete(org.db.main.Queryable, int)
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testDeleteWithZeroAsParameter() {
@@ -445,7 +450,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException auftritt, wenn -1 als
 	 * ID übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#delete(org.db.main.AbstractQuery, int)
+	 * @see org.db.main.DbController#delete(org.db.main.Queryable, int)
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testDeleteWithMinusOneAsParameter() {
@@ -458,7 +463,7 @@ public class TestDbController {
 	 * Überprüft, ob SQL-Fehler abgefangen werden und eine entsprechende
 	 * Nachricht ausgegeben wird.
 	 * 
-	 * @see org.db.main.DbController#delete(org.db.main.AbstractQuery, int)
+	 * @see org.db.main.DbController#delete(org.db.main.Queryable, int)
 	 */
 	@Test
 	public void testDeleteWithSqlException() {
@@ -478,7 +483,7 @@ public class TestDbController {
 	 * Überprüft, ob der angegebene Datensatz in die Datenbank geschrieben
 	 * werden konnte.
 	 * 
-	 * @see org.db.main.DbController#insert(org.db.main.AbstractQuery,
+	 * @see org.db.main.DbController#insert(org.db.main.Queryable,
 	 * org.db.datas.Data)
 	 */
 	@Test
@@ -497,7 +502,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException auftritt, wenn null
 	 * als Query übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#insert(org.db.main.AbstractQuery,
+	 * @see org.db.main.DbController#insert(org.db.main.Queryable,
 	 * org.db.datas.Data)
 	 */
 	@Test(expected=IllegalArgumentException.class)
@@ -510,8 +515,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException auftritt, wenn null
 	 * als Daten übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#insert(org.db.main.AbstractQuery,
-	 * org.db.datas.Data)
+	 * @see org.db.main.DbController#insert(org.db.main.Queryable, Data)
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testInsertWithNullAsData() {
@@ -523,8 +527,7 @@ public class TestDbController {
 	 * Überprüft, ob SQL-Fehler abgefangen werden, wenn sie auftreten und ob
 	 * sie als Nachricht ausgegeben werden.
 	 * 
-	 * @see org.db.main.DbController#insert(org.db.main.AbstractQuery,
-	 * org.db.datas.Data)
+	 * @see org.db.main.DbController#insert(org.db.main.Queryable, Data)
 	 */
 	@Test
 	public void testInsertWithSqlError() {
@@ -532,6 +535,7 @@ public class TestDbController {
 		String table = "test";
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().insert(query, data);
+		
 		LogData log = LogData.messageError("Datenbank: Der Datensatz konnte " +
 				"nicht in die Tabelle '" + table +"' eingefügt werden",
 				StatusBar.getInstance().getLog().get(0).getError());
@@ -543,7 +547,7 @@ public class TestDbController {
 	/**
 	 * Überprüft, ob der angegebene Datensatz geändert werden konnte.
 	 * 
-	 * @see org.db.main.DbController#update(org.db.main.AbstractQuery,
+	 * @see org.db.main.DbController#update(org.db.main.Queryable,
 	 * org.db.datas.Data)
 	 */
 	@Test
@@ -555,18 +559,18 @@ public class TestDbController {
 		DbController.getInstance().insert(query, data);
 		DbController.getInstance().update(query, data);
 		LogData log = LogData.message("Datenbank: Der Datensatz mit der ID " +
-		data.getId() + " in der Tabelle '" + table + "' wurde geändert.", "");
+		data.getId() + " aus der Tabelle '" + table + "' wurde geändert.", "");
 		
 		assertThat(DbController.getInstance().count(query), is (1));
-		assertThat(StatusBar.getInstance().getLog().size(), is(1));
-		assertThat(StatusBar.getInstance().getLog().get(0), is(log));
+		assertThat(StatusBar.getInstance().getLog().size(), is(3));
+		assertThat(StatusBar.getInstance().getLog().get(2), is(log));
 	}
 	
 	/**
 	 * Überprüft, ob der Fehler IllegalArgumentException auftritt, wenn null als
 	 * Query übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#update(org.db.main.AbstractQuery,
+	 * @see org.db.main.DbController#update(org.db.main.Queryable,
 	 * org.db.datas.Data)
 	 */
 	@Test(expected=IllegalArgumentException.class)
@@ -579,7 +583,7 @@ public class TestDbController {
 	 * Überprüft, ob der Fehler IllegalArgumentException auftritt, wenn null als
 	 * Daten übergeben wird.
 	 * 
-	 * @see org.db.main.DbController#update(org.db.main.AbstractQuery,
+	 * @see org.db.main.DbController#update(org.db.main.Queryable,
 	 * org.db.datas.Data)
 	 */
 	@Test(expected=IllegalArgumentException.class)
@@ -599,8 +603,8 @@ public class TestDbController {
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().update(query, data);
 		LogData log = LogData.messageError("Datenbank: Der Datensatz mit der " +
-				data.getId() + " ID in der Tabelle '" + table +
-				"' nicht geändert werden.",
+				"ID " + data.getId() + " aus der Tabelle '" + table +
+				"' konnte nicht geändert werden.",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
 		assertThat(StatusBar.getInstance().getLog().size(), is(1));
