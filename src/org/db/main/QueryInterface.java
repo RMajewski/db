@@ -101,7 +101,8 @@ public interface QueryInterface {
 	public String search(String col, int number);
 	
 	/**
-	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze.
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze aufsteigender
+	 * Anordnung.
 	 * 
 	 * @param col Name der Spalte, nach der sortiert werden soll
 	 * 
@@ -110,13 +111,34 @@ public interface QueryInterface {
 	public String sort(String col);
 	
 	/**
-	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze.
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze in aufsteigender
+	 * Anordnung.
 	 * 
 	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
 	 * 
 	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren.
 	 */
 	public String sort(String[] cols);
+	
+	/**
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze in absteigender
+	 * Anordnung.
+	 * 
+	 * @param col Name der Spalte, nach der sortiert werden soll
+	 * 
+	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren
+	 */
+	public String sortDesc(String col);
+	
+	/**
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze in absteigender
+	 * Anordnung.
+	 * 
+	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren.
+	 */
+	public String sortDesc(String[] cols);
 	
 	/**
 	 * Erzeugt die Meldung, dass ein Datensatz richtig eingefügt wurde.

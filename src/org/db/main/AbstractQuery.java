@@ -453,10 +453,9 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @return Datenbank-Abfrage, wo nach einer bestimmten Spalte sortiert
 	 * wird.
 	 */
-	@Override
-	public String sort(String col) {
+	public String sortAsc(String col) {
 		String[] sort = {col};
-		return sort(sort);
+		return sort(sort, true);
 	}
 	
 	/**
@@ -466,8 +465,47 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * 
 	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren.
 	 */
+	public String sortAsc(String[] cols) {
+		return sort(cols, true);
+	}
+	
+	/**
+	 * Erzeugt die Datenbank-Abfrage, in der nach einer bestimmten Spalte
+	 * sortiert werden soll.
+	 * 
+	 * @param col Spalte, nach der sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, wo nach einer bestimmten Spalte sortiert
+	 * wird.
+	 */
 	@Override
+	public String sort(String col) {
+		String[] sort = {col};
+		return sort(sort, true);
+	}
+	
+	/**
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze.
+	 * 
+	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren.
+	 */
 	public String sort(String[] cols) {
+		return sort(cols, true);
+	}
+	
+	/**
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze.
+	 * 
+	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
+	 * 
+	 * @param asc Soll aufsteigend sortiert werden? Wird true übergeben, so wird
+	 * aufsteigend sortiert (ASC). Bei false wird absteigend sortiert (DESC).
+	 * 
+	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren.
+	 */
+	public String sort(String[] cols, boolean asc) {
 		// Rückgabe vorbereiten
 		StringBuilder ret = new StringBuilder("SELECT ");
 		
@@ -498,10 +536,39 @@ public abstract class AbstractQuery implements QueryInterface {
 			ret.append("id");
 		}
 
-		ret.append(" ASC");
+		if (asc)
+			ret.append(" ASC");
+		else
+			ret.append(" DESC");
 		
 		// Rückgabe der Datenbank-Abfrage
 		return ret.toString();
+	}
+	
+	/**
+	 * Erzeugt die Datenbank-Abfrage, in der nach einer bestimmten Spalte in
+	 * absteigender Richtung sortiert werden soll.
+	 * 
+	 * @param col Spalte, nach der sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, wo nach einer bestimmten Spalte sortiert
+	 * wird.
+	 */
+	public String sortDesc(String col) {
+		String[] sort = {col};
+		return sort(sort, false);
+	}
+	
+	/**
+	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze in absteigender
+	 * Anordnung.
+	 * 
+	 * @param cols Namen der Spalten, nach denen sortiert werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, um die Datensätze zu sortieren.
+	 */
+	public String sortDesc(String[] cols) {
+		return sort(cols, false);
 	}
 	
 	/**

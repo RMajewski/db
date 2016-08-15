@@ -316,6 +316,86 @@ public class TestAbstractQuery {
 	}
 
 	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
+	 * nach den angegebenen Spalten aufsteigend zu sortieren.
+	 * 
+	 * Test method for {@link org.db.main.AbstractQuery#sort(java.lang.String[])}.
+	 */
+	@Test
+	public void testSortStringArrayBooleanWithTrueAsParameter() {
+		String[] sort = {_dsc, _id};
+		assertThat(_test.sort(sort, true), is("SELECT " + _id + ", " + _dsc + 
+				" FROM " + _tableName + " ORDER BY " + _dsc + ", " + _id + 
+				" ASC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
+	 * nach den angegebenen Spalten absteigend zu sortieren.
+	 * 
+	 * Test method for {@link org.db.main.AbstractQuery#sort(java.lang.String[])}.
+	 */
+	@Test
+	public void testSortStringArrayBooleanWithFalseAsParameter() {
+		String[] sort = {_dsc, _id};
+		assertThat(_test.sort(sort, false), is("SELECT " + _id + ", " + _dsc + 
+				" FROM " + _tableName + " ORDER BY " + _dsc + ", " + _id + 
+				" DESC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
+	 * nach der angegebenen Spalte zu sortieren.
+	 * 
+	 * @see org.db.main.AbstractQuery#sort(java.lang.String)
+	 */
+	@Test
+	public void testSortAscString() {
+		assertThat(_test.sortAsc(_dsc), is("SELECT " + _id + ", " + _dsc + 
+				" FROM " + _tableName + " ORDER BY " + _dsc + " ASC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
+	 * nach den angegebenen Spalten zu sortieren.
+	 * 
+	 * Test method for {@link org.db.main.AbstractQuery#sort(java.lang.String[])}.
+	 */
+	@Test
+	public void testSortAscStringArray() {
+		String[] sort = {_dsc, _id};
+		assertThat(_test.sortAsc(sort), is("SELECT " + _id + ", " + _dsc + 
+				" FROM " + _tableName + " ORDER BY " + _dsc + ", " + _id + 
+				" ASC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
+	 * nach der angegebenen Spalte zu sortieren.
+	 * 
+	 * @see org.db.main.AbstractQuery#sort(java.lang.String)
+	 */
+	@Test
+	public void testSortDescString() {
+		assertThat(_test.sortDesc(_dsc), is("SELECT " + _id + ", " + _dsc + 
+				" FROM " + _tableName + " ORDER BY " + _dsc + " DESC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
+	 * nach den angegebenen Spalten zu sortieren.
+	 * 
+	 * Test method for {@link org.db.main.AbstractQuery#sort(java.lang.String[])}.
+	 */
+	@Test
+	public void testSortDescStringArray() {
+		String[] sort = {_dsc, _id};
+		assertThat(_test.sortDesc(sort), is("SELECT " + _id + ", " + _dsc + 
+				" FROM " + _tableName + " ORDER BY " + _dsc + ", " + _id + 
+				" DESC"));
+	}
+
+	/**
 	 * Testet, ob die richtige Status-Nachricht generiert wurde.
 	 * 
 	 * @see org.db.main.AbstractQuery#statusInsertOk()
