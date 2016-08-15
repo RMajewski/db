@@ -55,7 +55,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData errorDatabaseMessage(Exception error) {
-		return LogData.messageError("Fehler beim Zugriff auf die Datenbank",
+		return LogData.messageDatabaseError("Fehler beim Zugriff auf die Datenbank",
 				error);
 	}
 	
@@ -76,7 +76,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData createTableMessage(String table) {
-		return LogData.message("Datenbank: Die Tabelle '" + table + 
+		return LogData.messageDatabaseInsert("Datenbank: Die Tabelle '" + table + 
 				"' wurde erstellt.", "");
 	}
 	/**
@@ -101,7 +101,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData notCreateTableMessage(String table, Exception error) {
-		return LogData.messageError("Datenbank: Die Tabelle '" + table + 
+		return LogData.messageDatabaseError("Datenbank: Die Tabelle '" + table + 
 				"' konnte nicht erstellt werden.", error);
 	}
 	
@@ -151,7 +151,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData tableErrorMessage(String table, Exception error) {
-		return LogData.messageError("Datenbank: Fehler beim Zugriff auf die " +
+		return LogData.messageDatabaseError("Datenbank: Fehler beim Zugriff auf die " +
 				"Tabelle '" + table + "'.", error);
 	}
 	
@@ -173,7 +173,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData insertInTableMessage(String table) {
-		return LogData.message("Datenbank: In die Tabelle '" + table + 
+		return LogData.messageDatabaseInsert("Datenbank: In die Tabelle '" + table + 
 				"' wurde ein Datensatz eingefügt.", "");
 	}
 	
@@ -203,7 +203,7 @@ public class DbStatus {
 	///@todo Test hinzufügen
 	public static LogData notInsertInTableMessage(String table,
 			Exception error) {
-		return LogData.messageError("Datenbank: Der Datensatz konnte " +
+		return LogData.messageDatabaseError("Datenbank: Der Datensatz konnte " +
 				"nicht in die Tabelle '" + table +"' eingefügt werden", error);
 	}
 	
@@ -229,7 +229,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData updateInTableMessage(String table, int id) {
-		return LogData.message("Datenbank: Der Datensatz mit der ID " + id +
+		return LogData.messageDatabaseInsert("Datenbank: Der Datensatz mit der ID " + id +
 				" aus der Tabelle '" + table + "' wurde geändert.", "");
 	}
 	
@@ -263,7 +263,7 @@ public class DbStatus {
 	///@todo Test hinzufügen
 	public static LogData notUpdateInTableMessage(String table, int id,
 			Exception error) {
-		return LogData.messageError("Datenbank: Der Datensatz mit der ID " +
+		return LogData.messageDatabaseError("Datenbank: Der Datensatz mit der ID " +
 				id + " aus der Tabelle '" + table + 
 				"' konnte nicht geändert werden.", error);
 	}
@@ -290,7 +290,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData deleteFromTableMessage(String table, int id) {
-		return LogData.message("Datenbank: Der Datensatz mit der ID " + id + 
+		return LogData.messageDatabaseInsert("Datenbank: Der Datensatz mit der ID " + id + 
 				" wurde aus der Tabelle '" + table + "' gelöscht.", "");
 	}
 	
@@ -325,7 +325,7 @@ public class DbStatus {
 	///@todo Test hinzufügen
 	public static LogData notDeleteFromTableMessage(String table, int id,
 			Exception error) {
-		return LogData.messageError("Datenbank: Der Datensatz mit der ID " +
+		return LogData.messageDatabaseError("Datenbank: Der Datensatz mit der ID " +
 				id + " konnte nicht aus der Tabelle '" + table +
 				"' gelöscht werden.", error);
 	}
@@ -360,7 +360,7 @@ public class DbStatus {
 	///@todo Test hinzufügen
 	public static LogData getFromTableMessage(String table, int id,
 			Exception error) {
-		return LogData.messageError("Datenbank: Der Datensatz mit der ID " +
+		return LogData.messageDatabaseError("Datenbank: Der Datensatz mit der ID " +
 				String.valueOf(id) + " konnte nicht in der Tabelle '" + table +
 				"' gefunden werden.", error);
 	}
@@ -387,7 +387,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData notSqlMessage(String sql, Exception error) {
-		return LogData.messageError(
+		return LogData.messageDatabaseError(
 				"Datenbank: Es ist ein Fehler beim ausführen einer " +
 				"SQL-Abfrage aufgetreten.",
 				"SQL-Abfrage, bei der der Fehler aufgetreten " +
@@ -415,7 +415,7 @@ public class DbStatus {
 	 */
 	///@todo Test hinzufügen
 	public static LogData sqlMessage(String sql) {
-		return LogData.message(
+		return LogData.messageDatabaseInsert(
 				"Datenbank: SQL-Abfrage wurde erfolgreich ausgeführt.",
 				"SQL-Abfrage, die ausgeführt wurde:" + System.lineSeparator() +
 				"\t" + sql);

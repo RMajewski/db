@@ -294,6 +294,8 @@ public class DbController {
 	 * 
 	 * @return Wurde die SQL-Abfrage richtig ausgeführt? Wenn ja, wird true
 	 * zurückgegeben. Wenn nicht, dann false.
+	 * 
+	 * @todo Test für diese Methode einfügen
 	 */
 	///@todo Test für diese Methode einfügen
 	public boolean sql(String sql, LogData message) {

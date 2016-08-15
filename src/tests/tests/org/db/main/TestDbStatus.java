@@ -88,7 +88,7 @@ public class TestDbStatus {
 	private void testMessage(String message) {
 		LogData data = getLastLog();
 		
-		assertThat(data.getOut(), is(LogData.NONE));
+		assertThat(data.getOut(), is(LogData.DATABASE_INSERT));
 		assertThat(data.getError(), isEmptyString());
 		assertThat(data.getMessage(), is(message));
 	}
@@ -104,7 +104,7 @@ public class TestDbStatus {
 	private void testError(String message, String error) {
 		LogData data = getLastLog();
 		
-		assertThat(data.getOut(), is (LogData.ERROR));
+		assertThat(data.getOut(), is (LogData.DATABASE_ERROR));
 		assertThat(data.getError(), is(error));
 		assertThat(data.getMessage(), is(message));
 	}
@@ -267,7 +267,7 @@ public class TestDbStatus {
 				System.lineSeparator() + "Fehlerbericht:" +
 				System.lineSeparator() + _errorMessage;
 		
-		assertThat(data.getOut(), is (LogData.ERROR));
+		assertThat(data.getOut(), is (LogData.DATABASE_ERROR));
 		assertThat(data.getError(), is(error));
 		assertThat(data.getMessage(), is("Datenbank: Es ist ein Fehler beim " +
 				"ausführen einer SQL-Abfrage aufgetreten."));
@@ -284,7 +284,7 @@ public class TestDbStatus {
 		DbStatus.sql(sql);
 		LogData data = getLastLog();
 		
-		assertThat(data.getOut(), is(LogData.NONE));
+		assertThat(data.getOut(), is(LogData.DATABASE_INSERT));
 		assertThat(data.getError(), is("SQL-Abfrage, die ausgeführt wurde:" +
 				System.lineSeparator() + "\t" + sql));
 		assertThat(data.getMessage(), is("Datenbank: SQL-Abfrage wurde " +

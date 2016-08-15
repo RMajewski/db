@@ -188,7 +188,7 @@ public abstract class AbstractQuery implements Queryable {
 	 * Bei <b>false</b> werden keine Anführungszeichen gesetzt.
 	 * 
 	 * @param id Bei <b>true</b> wird das Feld für die ID mit angegeben. Bei
-	 * <b>false</b> wird es nicht.</b>
+	 * <b>false</b> wird es das nicht.
 	 */
 	public String insert(boolean quotes, boolean id) {
 		// Abfrage vorbereiten
@@ -241,6 +241,8 @@ public abstract class AbstractQuery implements Queryable {
 	 * und des gespeicherten Tabellen-Namens erstellt.
 	 * 
 	 * @return Datenbank-Abfrage um neuen Datensatz einzufügen
+	 * 
+	 * @OPT Diese mit der Methode insert(boolean, boolean) zusammenlegen.
 	 */
 	// OPT Diese mit der Methode insert(boolean, boolean) zusammenlegen.
 	public String insertWithId() {

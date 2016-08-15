@@ -29,6 +29,7 @@
 	<property name="dist.dir" location="dist" />
 	<property name="build.dir" location="${dist.dir}/classes" />
 	<property name="docs.dir" location="doc" />
+	<property name="docs.javadoc" location="${docs.dir}/javadoc"/>
 	<property name="report.dir" location="reports" />
 	<property name="report.junit" location="${report.dir}/junit" />
 	<property name="report.junit.work" location="${report.junit}/works" />
@@ -70,6 +71,7 @@
 			<equals arg1="${dir.makedir}" arg2="no" />
 			<then>
 				<mkdir dir="${build.dir}" />
+				<mkdir dir="${docs.javadoc}" />
 				<mkdir dir="${report.junit.work}" />
 				<mkdir dir="${report.fit}" />
 				<var name="dir.makedir" value="yes"/>
@@ -138,5 +140,30 @@
 			<fileset dir="${report.junit.work}" includes="**/*.xml" />
 			<report format="frames" todir="${report.junit}" />
 		</junitreport>
+	</target>
+	
+	<!-- Dokumentation erzeugen -->
+	<target name="javadoc" depends="clean, makedir">
+		<javadoc destdir="${docs.javadoc}"
+				 sourcepath="${src.dir}"
+				 packagenames="org.db.*"
+				 access="private"
+			 	 encoding="UTF-8"
+		 		 docencoding="UTF-8"
+				 charset="UTF-8"
+				 locale="de_DE"
+				 version="true"
+				 author="false"
+				 windowtitle="Datenbank-Controller API">
+			<doctitle><![CDATA[<h1>Datenbank-Controller API</h1>]]></doctitle>
+			<tag name="todo" scope="all" description="To do:" />
+			<tag name="OPT" scope="all" description="Source optimization:" />
+			<link href="http://docs.oracle.com/javase/8/docs/api/"/>
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javadoc>
 	</target>
 </project>
