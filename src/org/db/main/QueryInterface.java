@@ -94,11 +94,44 @@ public interface QueryInterface {
 	 * 
 	 * @param col Name der Spalte, in der gesucht werden soll
 	 * 
-	 * @param number Zahl, nach der gesucht werden soll
+	 * @param search Zahl, nach der gesucht werden soll
 	 * 
 	 * @return SQL-Abfrage zum suchen eines Datensatzes.
 	 */
-	public String search(String col, int number);
+	public String search(String col, int search);
+
+	/**
+	 * Erstellt die SQL-Abfrage zum suchen eines Datensatzes.
+	 * 
+	 * @param col Name der Spalte, in der gesucht werden soll
+	 * 
+	 * @param search Boolscher-Wert, nach der gesucht werden soll
+	 * 
+	 * @return SQL-Abfrage zum suchen eines Datensatzes.
+	 */
+	String search(String col, boolean search);
+
+	/**
+	 * Erstellt die SQL-Abfrage zum suchen eines Datensatzes.
+	 * 
+	 * @param col Name der Spalte, in der gesucht werden soll
+	 * 
+	 * @param search Long-Wert, nach der gesucht werden soll
+	 * 
+	 * @return SQL-Abfrage zum suchen eines Datensatzes.
+	 */
+	String search(String col, long search);
+
+	/**
+	 * Erstellt die SQL-Abfrage zum suchen eines Datensatzes.
+	 * 
+	 * @param col Name der Spalte, in der gesucht werden soll
+	 * 
+	 * @param search Double-Wert, nach der gesucht werden soll
+	 * 
+	 * @return SQL-Abfrage zum suchen eines Datensatzes.
+	 */
+	String search(String col, double search);
 	
 	/**
 	 * Erstellt die SQL-Abfrage zum sortieren der Datensätze.

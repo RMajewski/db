@@ -367,6 +367,7 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
 	 * werden soll.
 	 */
+	/// OPT Die Such-Methoden zusammenlegen (Doppelter Quellcode)
 	@Override
 	public String search(String col, String str) {
 		// Abfrage vorbereiten
@@ -411,9 +412,141 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
 	 * werden soll.
 	 */
-	/// @todo Such-Methoden auch für boolean, long und double hinzufügen.
+	/// OPT Die Such-Methoden zusammenlegen (Doppelter Quellcode)
 	@Override
 	public String search(String col, int search) {
+		// Abfrage vorbereiten
+		StringBuilder ret = new StringBuilder("SELECT ");
+		
+		// Spalten-Namen einfügen
+		for (int i = 0; i < _columnNames.size(); i++) {
+			if (i == 0)
+				ret.append(_columnNames.get(i));
+			else {
+				ret.append(", ");
+				ret.append(_columnNames.get(i));
+			}
+		}
+		
+		// Tabellen-Name einfügen
+		ret.append(" FROM ");
+		ret.append(_tableName);
+		
+		// Suche einfügen
+		ret.append(" WHERE ");
+		ret.append(col);
+		ret.append(" = ");
+		ret.append(search);
+		
+		// Nach was wird geordnet?
+		ret.append(" ORDER BY id ASC");
+		
+		// Abfrage zurück geben
+		return ret.toString();
+	}
+	
+	/**
+	 * Erzeugt die Datenbank-Abfrage, in der ein bestimmter Datensatz
+	 * ausgewählt werden soll.
+	 * 
+	 * @param col Spalte, in der gesucht werden soll.
+	 * 
+	 * @param search Boolean-Wert, nach dem gesucht werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
+	 * werden soll.
+	 */
+	/// OPT Die Such-Methoden zusammenlegen (Doppelter Quellcode)
+	@Override
+	public String search(String col, boolean search) {
+		// Abfrage vorbereiten
+		StringBuilder ret = new StringBuilder("SELECT ");
+		
+		// Spalten-Namen einfügen
+		for (int i = 0; i < _columnNames.size(); i++) {
+			if (i == 0)
+				ret.append(_columnNames.get(i));
+			else {
+				ret.append(", ");
+				ret.append(_columnNames.get(i));
+			}
+		}
+		
+		// Tabellen-Name einfügen
+		ret.append(" FROM ");
+		ret.append(_tableName);
+		
+		// Suche einfügen
+		ret.append(" WHERE ");
+		ret.append(col);
+		ret.append(" = ");
+		ret.append(search);
+		
+		// Nach was wird geordnet?
+		ret.append(" ORDER BY id ASC");
+		
+		// Abfrage zurück geben
+		return ret.toString();
+	}
+	
+	/**
+	 * Erzeugt die Datenbank-Abfrage, in der ein bestimmter Datensatz
+	 * ausgewählt werden soll.
+	 * 
+	 * @param col Spalte, in der gesucht werden soll.
+	 * 
+	 * @param search Long-Wert, nach dem gesucht werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
+	 * werden soll.
+	 */
+	/// OPT Die Such-Methoden zusammenlegen (Doppelter Quellcode)
+	@Override
+	public String search(String col, long search) {
+		// Abfrage vorbereiten
+		StringBuilder ret = new StringBuilder("SELECT ");
+		
+		// Spalten-Namen einfügen
+		for (int i = 0; i < _columnNames.size(); i++) {
+			if (i == 0)
+				ret.append(_columnNames.get(i));
+			else {
+				ret.append(", ");
+				ret.append(_columnNames.get(i));
+			}
+		}
+		
+		// Tabellen-Name einfügen
+		ret.append(" FROM ");
+		ret.append(_tableName);
+		
+		// Suche einfügen
+		ret.append(" WHERE ");
+		ret.append(col);
+		ret.append(" = ");
+		ret.append(search);
+		
+		// Nach was wird geordnet?
+		ret.append(" ORDER BY id ASC");
+		
+		// Abfrage zurück geben
+		return ret.toString();
+	}
+	
+	/**
+	 * Erzeugt die Datenbank-Abfrage, in der ein bestimmter Datensatz
+	 * ausgewählt werden soll.
+	 * 
+	 * @param col Spalte, in der gesucht werden soll.
+	 * 
+	 * @param search Double-Wert, nach dem gesucht werden soll.
+	 * 
+	 * @return Datenbank-Abfrage, in der ein bestimmter Datensatz ausgewählt
+	 * werden soll.
+	 */
+	/// OPT Die Such-Methoden zusammenlegen (Doppelter Quellcode)
+	@Override
+	public String search(String col, double search) {
 		// Abfrage vorbereiten
 		StringBuilder ret = new StringBuilder("SELECT ");
 		

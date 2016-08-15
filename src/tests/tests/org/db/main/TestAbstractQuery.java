@@ -290,6 +290,54 @@ public class TestAbstractQuery {
 	}
 
 	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um Datensätze zu
+	 * suchen, die in der angegebenen Spalte ein angegebenen boolean-Wert
+	 * enthalten.
+	 * 
+	 * @see org.db.main.AbstractQuery#search(java.lang.String, boolean)
+	 */
+	@Test
+	public void testSearchStringBoolean() {
+		boolean search = true;
+		
+		assertThat(_test.search(_dsc, search), is("SELECT " + _id + ", " +
+				_dsc + " FROM " + _tableName + " WHERE " + _dsc + " = " +
+				search + " ORDER BY " + _id + " ASC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um Datensätze zu
+	 * suchen, die in der angegebenen Spalte ein angegebenen long-Wert
+	 * enthalten.
+	 * 
+	 * @see org.db.main.AbstractQuery#search(java.lang.String, long)
+	 */
+	@Test
+	public void testSearchStringLong() {
+		long search = 19457389l;
+		
+		assertThat(_test.search(_dsc, search), is("SELECT " + _id + ", " +
+				_dsc + " FROM " + _tableName + " WHERE " + _dsc + " = " +
+				search + " ORDER BY " + _id + " ASC"));
+	}
+
+	/**
+	 * Testet, ob die richtige SQL-Abfrage generiert wird, um Datensätze zu
+	 * suchen, die in der angegebenen Spalte ein angegebenen double-Wert
+	 * enthalten.
+	 * 
+	 * @see org.db.main.AbstractQuery#search(java.lang.String, double)
+	 */
+	@Test
+	public void testSearchStringDouble() {
+		double search = 25.698;
+		
+		assertThat(_test.search(_dsc, search), is("SELECT " + _id + ", " +
+				_dsc + " FROM " + _tableName + " WHERE " + _dsc + " = " +
+				search + " ORDER BY " + _id + " ASC"));
+	}
+
+	/**
 	 * Testet, ob die richtige SQL-Abfrage generiert wird, um die Datensätze
 	 * nach der angegebenen Spalte zu sortieren.
 	 * 
