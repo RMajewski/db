@@ -27,7 +27,7 @@ package org.db.datas;
  * @version 0.1
  * @since 0.1
  */
-public class DataDescription extends Data {
+public class DataDescription extends org.db.datas.Data {
 	/**
 	 * Speichert die Beschreibung.
 	 */

@@ -26,6 +26,8 @@ package org.db.main;
  * 
  * @author René Majewski
  *
+ * @deprecated Wird durch {@link Queryable} ersetzt.
+ *
  * @version 0.1
  * @since 0.1
  */

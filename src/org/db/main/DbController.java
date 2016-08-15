@@ -23,9 +23,11 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.db.datas.Data;
 import org.log.LogData;
 import org.log.StatusBar;
 
@@ -238,6 +240,8 @@ public class DbController {
 	 * @param e Fehler, der aufgetreten ist.
 	 * 
 	 * @return Status-Nachricht bei Datenbank-Fehler.
+	 * 
+	 * @deprecated Wurde durch {@link DbStatus#errorDatabase(Exception) ersetzt.}
 	 */
 	public static LogData statusDbError(Exception e) {
 		return LogData.messageError("Fehler beim Zugriff auf die Datenbank", e);
@@ -264,5 +268,104 @@ public class DbController {
 		setAutoCommit(false);
 		ps.executeBatch();
 		setAutoCommit(true);
+	}
+
+	/**
+	 * Führt die angegebene SQL-Anweisung aus. Sollte ein SQLException-Fehler
+	 * auftreten so wird dieser abgefangen und eine Nachricht in der
+	 * Status-Leiste angezeigt.
+	 * 
+	 * @param sql SQL-Abfrage, die ausgeführt werden soll.
+	 */
+	public void sql(String sql) {
+		sql(sql, null);
+	}
+	
+	/**
+	 * Führt die angegebene SQL-Anweisung aus. Sollte ein SQLException-Fehler
+	 * auftrete, so wird dieser abgefangen und eine Nachricht in der
+	 * Status-Leiste angezeigt.
+	 * 
+	 * @param sql SQL-Abfrage, die ausgeführt werden soll.
+	 * 
+	 * @param message Nachricht, die beim auftreten des Fehlers SQLException
+	 * ausgegeben werden soll. Wird null übergeben, so wird eine standard
+	 * Nachricht ausgegeben.
+	 */
+	///@todo Test für diese Methode einfügen
+	public void sql(String sql, LogData message) {
+		if ((sql == null) || sql.isEmpty())
+			throw new IllegalArgumentException(
+					"Die SQL-Abfrage muss angegeben sein!");
+		try {
+			Statement stm = createStatement();
+			stm.executeUpdate(sql);
+		} catch (SQLException e) {
+			if (message == null)
+				DbStatus.notSql(sql, e);
+			else {
+				message.setError(LogData.createError(e));
+				StatusBar.getInstance().setMessage(message);
+			}
+		}
+	}
+
+	/**
+	 * Erstellt die angegebene Tabelle in der Datenbank.
+	 * 
+	 * @param query Abfrage, die von Queryable abgeleitet wurde.
+	 */
+	public void createTable(Queryable query) {
+		if (query == null)
+			throw new IllegalArgumentException(
+					"Die Abfrage muss übergeben werden.");
+		sql(query.createTable(), DbStatus.notCreateTableMessage(
+				query.getTableName(), null));
+	}
+
+	/**
+	 * Ermittelt von der angegebenen Tabelle die Anzahl an Datensätzen.
+	 * 
+	 * @param query Abfrage, die von Queryable abgeleitet wurde.
+	 * 
+	 * @return Anzahl an Datensätzen. ist ein Fehler aufgetreten, so wird -1
+	 * zurückgegeben.
+	 */
+	public int count(Queryable query) {
+		if (query == null)
+			throw new IllegalArgumentException(
+					"Die Abfrage muss übergeben werden.");
+		
+		int result = -1;
+		try {
+			Statement stm = createStatement();
+			ResultSet rs = stm.executeQuery(query.count());
+			if (rs.next())
+				result = rs.getInt(1);
+			rs.close();
+		} catch (SQLException e) {
+			StatusBar.getInstance().setMessage(LogData.messageError(
+					"Datenbank: Die Anzahl der Datensätze für die Tabelle '" +
+					query.getTableName() + "' konnte nicht ermittelt werden.",
+					e));
+		}
+		
+		return result;
+	}
+
+	/**
+	 * Fügt einen neuen Datensatz in die angegebene Tabelle ein.
+	 *  
+	 * @param query Abfrage, die von Queryable abgeleitet wurde.
+	 * 
+	 * @param data Datensatz, der in die Tabelle eingefügt werden soll.
+	 */
+	public void insert(Queryable query, Data data) {
+		if (query == null)
+			throw new IllegalArgumentException(
+					"Die Abfrage muss übergeben werden.");
+		
+		sql(query.insert(data), DbStatus.notInsertInTableMessage(
+				query.getTableName(), null));
 	}
 }

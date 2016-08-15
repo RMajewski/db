@@ -147,8 +147,12 @@ public abstract class TableModelData extends AbstractTableModel {
 	 */
 	@Override
 	public Class<?> getColumnClass(int column) {
+		if (_data.size() == 0)
+			return null;
+		
 		if (getValueAt(0, column) != null)
 			return getValueAt(0, column).getClass();
+		
 		return Object.class;
 	}
 }

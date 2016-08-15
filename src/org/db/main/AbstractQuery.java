@@ -22,6 +22,8 @@ package org.db.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.db.datas.Data;
+
 /**
  * Von dieser Klasse werden die einzelnen Klassen abgeleitet, die
  * Datenbank-Abfragen bereit stellen.
@@ -31,10 +33,25 @@ import java.util.List;
 
  * @author René Majewski
  * 
+ * @version 0.4
+ * Neue Methoden hinzugefügt: {@link #insert(Data)} und {@link #update(Data)}.
+ * 
+ * @version 0.3
+ * Es kann jetzt auch in absteigender Reihenfolge sortiert werden. Neue
+ * Methoden: {@link #sortDesc(String)} und {@link #sortDesc(String[])}.
+ * 
+ * @version 0.2
+ * Neue Such-Methoden zum suchen nach boolean-Werten
+ * ({@link #search(String, boolean)}), double-Werten
+ * ({@link #search(String, double)}) und long-Werten
+ * ({@link #search(String, long)}) hinzugefügt.
+ * 
  * @version 0.1
+ * Standard-Methoden implementiert.
+ * 
  * @since 0.1
  */
-public abstract class AbstractQuery implements QueryInterface {
+public abstract class AbstractQuery implements Queryable {
 	/**
 	 * Speichert den Namen der der Datenbank-Tabelle
 	 */
@@ -105,6 +122,7 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * 
 	 * @return Name der Datenbank-Tabelle
 	 */
+	@Override
 	public String getTableName() {
 		return _tableName;
 	}
@@ -712,7 +730,6 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @deprecated Wird durch {@link org.db.main.DbStatus#insertInTable(String)}
 	 * ersetzt.
 	 */
-	@Override
 	public String statusInsertOk() {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder("Datenbank: In die Tabelle '");
@@ -732,7 +749,6 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @deprecated Wurde durch
 	 * {@link org.db.main.DbStatus#notInsertInTable(String, Exception)} ersetzt.
 	 */
-	@Override
 	public String statusInsertError() {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder("Datenbank: In die Tabelle '");
@@ -746,12 +762,13 @@ public abstract class AbstractQuery implements QueryInterface {
 	/**
 	 * Erzeugt die Status-Nachricht, fürs ändern einen Datensatzes.
 	 * 
+	 * @param id ID des Datensatzes, der geändert wurde.
+	 * 
 	 * @return Status-Nachricht, wenn Datensatz geändert wurde.
 	 * 
 	 * @deprecated Wurde durch
 	 * {@link org.db.main.DbStatus#updateInTable(String, int)} ersetzt.
 	 */
-	@Override
 	public String statusUpdateOk(int id) {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder();
@@ -775,7 +792,6 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * {@link org.db.main.DbStatus#notUpdateInTable(String, int, Exception)}
 	 * ersetzt.
 	 */
-	@Override
 	public String statusUpdateError(int id) {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder();
@@ -797,7 +813,6 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * @deprecated Wurde durch
 	 * {@link org.db.main.DbStatus#deleteFromTable(String, int)} ersetzt.
 	 */
-	@Override
 	public String statusDeleteOk(int id) {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder();
@@ -821,7 +836,6 @@ public abstract class AbstractQuery implements QueryInterface {
 	 * {@link org.db.main.DbStatus#notDeleteFromTable(String, int, Exception)}
 	 * ersetzt.
 	 */
-	@Override
 	public String statusDeleteError(int id) {
 		// Nachricht vorbereiten
 		StringBuilder ret = new StringBuilder();

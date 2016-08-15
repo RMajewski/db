@@ -1,8 +1,8 @@
 #!!!Dies ist eine automatisch generierte Datei - es dürfen keine Änderungen vorgenommen werden !!!\#In dieser Datei stehen die Versions-Informationen für das Inventar-Plugin Gewicht.
-#Mon, 15 Aug 2016 08:44:20 +0200
+#Mon, 15 Aug 2016 08:53:49 +0200
 
 version.major=0
 version.minor=1
 version.patch=0
-version.build=14
-version.date=2016/08/15 08\:44
+version.build=15
+version.date=2016/08/15 08\:53
