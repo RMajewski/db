@@ -177,13 +177,19 @@ public interface QueryInterface {
 	 * Erzeugt die Meldung, dass ein Datensatz richtig eingefügt wurde.
 	 * 
 	 * @return Meldung: Datensatz wurde hinzugefügt.
+	 * 
+	 * @deprecated Wird durch {@link org.db.main.DbStatus#insertInTable(String)}
+	 * ersetzt.
 	 */
 	public String statusInsertOk();
 	
 	/**
 	 * Erzeugt die Meldung, dass ein Datensatz nicht eingefügt wurde.
 	 * 
-	 * @return Meldung: Datensatz konnte nicht eingefügt werden
+	 * @return Meldung: Datensatz konnte nicht eingefügt werden.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notInsertInTable(String, Exception)} ersetzt.
 	 */
 	public String statusInsertError();
 	
@@ -192,7 +198,10 @@ public interface QueryInterface {
 	 * 
 	 * @param id ID des Datensatzes, der geändert wurde.
 	 * 
-	 * @return Meldung: Datensatz wurde geändert
+	 * @return Meldung: Datensatz wurde geändert.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#updateInTable(String, int)} ersetzt.
 	 */
 	public String statusUpdateOk(int id);
 	
@@ -202,7 +211,11 @@ public interface QueryInterface {
 	 * 
 	 * @param id ID des Datensatzes, der nicht geändert werden konnte.
 	 * 
-	 * @return Meldung: Datensatz konnte nicht geändert werden
+	 * @return Meldung: Datensatz konnte nicht geändert werden.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notUpdateInTable(String, int, Exception)}
+	 * ersetzt.
 	 */
 	public String statusUpdateError(int id);
 	
@@ -212,6 +225,9 @@ public interface QueryInterface {
 	 * @param id ID des Datensatzes, der gelöscht wurde.
 	 * 
 	 * @return Meldung: Datensatz wurde gelöscht
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#deleteFromTable(String, int)} ersetzt.
 	 */
 	public String statusDeleteOk(int id);
 	
@@ -221,6 +237,10 @@ public interface QueryInterface {
 	 * @param id ID des Datensatzes, der nicht gelöscht werden konnte.
 	 * 
 	 * @return Meldung: Datensatz konnte nicht gelöscht werden.
+	 * 
+	 * @deprecated Wurde durch
+	 * {@link org.db.main.DbStatus#notDeleteFromTable(String, int, Exception)}
+	 * ersetzt.
 	 */
 	public String statusDeleteError(int id);
 }
