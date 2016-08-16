@@ -30,6 +30,7 @@
 	<property name="build.dir" location="${dist.dir}/classes" />
 	<property name="docs.dir" location="doc" />
 	<property name="docs.javadoc" location="${docs.dir}/javadoc"/>
+	<property name="docs.doxygen" location="${docs.dir}/doc" />
 	<property name="report.dir" location="reports" />
 	<property name="report.junit" location="${report.dir}/junit" />
 	<property name="report.junit.work" location="${report.junit}/works" />
@@ -72,6 +73,7 @@
 			<then>
 				<mkdir dir="${build.dir}" />
 				<mkdir dir="${docs.javadoc}" />
+				<mkdir dir="${docs.doxygen}" />
 				<mkdir dir="${report.junit.work}" />
 				<mkdir dir="${report.fit}" />
 				<var name="dir.makedir" value="yes"/>
@@ -142,7 +144,7 @@
 		</junitreport>
 	</target>
 	
-	<!-- Dokumentation erzeugen -->
+	<!-- Dokumentation erzeugen (javadoc) -->
 	<target name="javadoc" depends="clean, makedir">
 		<javadoc destdir="${docs.javadoc}"
 				 sourcepath="${src.dir}"
@@ -165,5 +167,10 @@
 				</fileset>
 			</classpath>
 		</javadoc>
+	</target>
+	
+	<!-- Dokumentation erzeugen (doxygen) -->
+	<target name="doxygen" depends="clean, makedir">
+		<exec executable="doxygen" />
 	</target>
 </project>

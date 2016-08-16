@@ -276,9 +276,12 @@ public class DbController {
 	 * Status-Leiste angezeigt.
 	 * 
 	 * @param sql SQL-Abfrage, die ausgeführt werden soll.
+	 * 
+	 * @return Wurde die SQL-Abfrage richtig ausgeführt? Wenn ja, wird true
+	 * zurückgegeben. Wenn nicht, dann false.
 	 */
-	public void sql(String sql) {
-		sql(sql, null);
+	public boolean sql(String sql) {
+		return sql(sql, null);
 	}
 	
 	/**
@@ -294,10 +297,7 @@ public class DbController {
 	 * 
 	 * @return Wurde die SQL-Abfrage richtig ausgeführt? Wenn ja, wird true
 	 * zurückgegeben. Wenn nicht, dann false.
-	 * 
-	 * @todo Test für diese Methode einfügen
 	 */
-	///@todo Test für diese Methode einfügen
 	public boolean sql(String sql, LogData message) {
 		if ((sql == null) || sql.isEmpty())
 			throw new IllegalArgumentException(
@@ -354,7 +354,7 @@ public class DbController {
 				result = rs.getInt(1);
 			rs.close();
 		} catch (SQLException e) {
-			StatusBar.getInstance().setMessage(LogData.messageError(
+			StatusBar.getInstance().setMessage(LogData.messageDatabaseError(
 					"Datenbank: Die Anzahl der Datensätze für die Tabelle '" +
 					query.getTableName() + "' konnte nicht ermittelt werden.",
 					e));

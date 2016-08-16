@@ -84,7 +84,7 @@ public class TestDbController {
 	public void testStatusDbErrorNotNullAndNotEmpty() {
 		Exception exception = new Exception();
 		LogData log = 
-				LogData.messageError("Fehler beim Zugriff auf die Datenbank",
+				LogData.messageDatabaseError("Fehler beim Zugriff auf die Datenbank",
 						exception);
 		LogData res = DbController.statusDbError(exception);
 		assertThat(res.getMessage(), is(equalTo(log.getMessage())));
@@ -254,8 +254,8 @@ public class TestDbController {
 	@Test
 	public void testSql() {
 		String sql = "SELECT tbl_name FROM sqlite_master WHERE type='table'";
-		DbController.getInstance().sql(sql);
 		
+		assertThat(DbController.getInstance().sql(sql), is(true));
 		assertThat(StatusBar.getInstance().getLog().size(), is(0));
 	}
 	
@@ -268,9 +268,10 @@ public class TestDbController {
 	@Test
 	public void testSqlWithError() {
 		String sql = "SELECT test FROM sqlite_master WHERE type='table'";
-		DbController.getInstance().sql(sql);
 		
-		LogData log = LogData.messageError("Datenbank: Es ist ein Fehler " +
+		assertThat(DbController.getInstance().sql(sql), is(false));
+		
+		LogData log = LogData.messageDatabaseError("Datenbank: Es ist ein Fehler " +
 				"beim ausführen einer SQL-Abfrage aufgetreten.",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
@@ -297,7 +298,7 @@ public class TestDbController {
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testSqlWithEmptyStringAsParameter() {
-		DbController.getInstance().sql(null);
+		DbController.getInstance().sql(new String());
 	}
 	
 	/**
@@ -337,7 +338,7 @@ public class TestDbController {
 		String table = "test";
 		AbstractQueryImpl query = new AbstractQueryImpl(table, true);
 		DbController.getInstance().count(query);
-		LogData log = LogData.messageError("Datenbank: Die Anzahl der " +
+		LogData log = LogData.messageDatabaseError("Datenbank: Die Anzahl der " +
 				"Datensätze für die Tabelle '" + table +
 				"' konnte nicht ermittelt werden.",
 				StatusBar.getInstance().getLog().get(0).getError());
@@ -356,7 +357,7 @@ public class TestDbController {
 		String table = "test";
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().createTable(query);
-		LogData log = LogData.message("Datenbank: Die Tabelle '" + table +
+		LogData log = LogData.messageDatabaseInsert("Datenbank: Die Tabelle '" + table +
 				"' wurde erstellt.", "");
 		
 		assertThat(StatusBar.getInstance().getLog().size(), is(1));
@@ -386,7 +387,7 @@ public class TestDbController {
 		AbstractQueryImpl query = new AbstractQueryImpl(table, true);
 		DbController.getInstance().createTable(query);
 		
-		LogData log = LogData.messageError("Datenbank: Die Tabelle '" + table +
+		LogData log = LogData.messageDatabaseError("Datenbank: Die Tabelle '" + table +
 				"' konnte nicht erstellt werden.",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
@@ -413,7 +414,7 @@ public class TestDbController {
 		
 		assertThat(DbController.getInstance().count(query), is(0));
 		
-		LogData log = LogData.message("Datenbank: Der Datensatz mit der ID " +
+		LogData log = LogData.messageDatabaseInsert("Datenbank: Der Datensatz mit der ID " +
 				data.getId() + " wurde aus der Tabelle '" + table +
 				"' gelöscht.",
 				StatusBar.getInstance().getLog().get(0).getError());
@@ -470,7 +471,7 @@ public class TestDbController {
 		String table = "test";
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().delete(query, 1);
-		LogData log = LogData.messageError("Datenbank: Der Datensatz mit der " +
+		LogData log = LogData.messageDatabaseError("Datenbank: Der Datensatz mit der " +
 				"ID 1 konnte nicht aus der Tabelle '" + table +
 				"' gelöscht werden.",
 				StatusBar.getInstance().getLog().get(0).getError());
@@ -536,7 +537,7 @@ public class TestDbController {
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().insert(query, data);
 		
-		LogData log = LogData.messageError("Datenbank: Der Datensatz konnte " +
+		LogData log = LogData.messageDatabaseError("Datenbank: Der Datensatz konnte " +
 				"nicht in die Tabelle '" + table +"' eingefügt werden",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
@@ -558,7 +559,7 @@ public class TestDbController {
 		DbController.getInstance().createTable(query);
 		DbController.getInstance().insert(query, data);
 		DbController.getInstance().update(query, data);
-		LogData log = LogData.message("Datenbank: Der Datensatz mit der ID " +
+		LogData log = LogData.messageDatabaseInsert("Datenbank: Der Datensatz mit der ID " +
 		data.getId() + " aus der Tabelle '" + table + "' wurde geändert.", "");
 		
 		assertThat(DbController.getInstance().count(query), is (1));
@@ -602,12 +603,86 @@ public class TestDbController {
 		String table = "test";
 		AbstractQueryImpl query = new AbstractQueryImpl(table);
 		DbController.getInstance().update(query, data);
-		LogData log = LogData.messageError("Datenbank: Der Datensatz mit der " +
+		LogData log = LogData.messageDatabaseError("Datenbank: Der Datensatz mit der " +
 				"ID " + data.getId() + " aus der Tabelle '" + table +
 				"' konnte nicht geändert werden.",
 				StatusBar.getInstance().getLog().get(0).getError());
 		
 		assertThat(StatusBar.getInstance().getLog().size(), is(1));
 		assertThat(StatusBar.getInstance().getLog().get(0), is(log));
+	}
+	
+	/**
+	 * Überprüft, ob die SQL-Anweisung ohne Fehler ausgeführt wird.
+	 * 
+	 * @see org.db.main.DbController#sql(String)
+	 */
+	@Test
+	public void testSqlStringLogData() {
+		String sql = "SELECT tbl_name FROM sqlite_master WHERE type='table'";
+		
+		assertThat(DbController.getInstance().sql(sql, null), is(true));
+		assertThat(StatusBar.getInstance().getLog().size(), is(0));
+	}
+	
+	/**
+	 * Überprüft, ob der Fehler abgefangen und eine entsprechende
+	 * Status-Nachricht gesetzt wurde.
+	 * 
+	 * @see org.db.main.DbController#sql(String)
+	 */
+	@Test
+	public void testSqlStringLogDataWithErrorAndNullAsData() {
+		String sql = "SELECT test FROM sqlite_master WHERE type='table'";
+		
+		assertThat(DbController.getInstance().sql(sql, null), is(false));
+		
+		LogData log = LogData.messageDatabaseError("Datenbank: Es ist ein Fehler " +
+				"beim ausführen einer SQL-Abfrage aufgetreten.",
+				StatusBar.getInstance().getLog().get(0).getError());
+		
+		assertThat(StatusBar.getInstance().getLog().size(), is(1));
+		assertThat(StatusBar.getInstance().getLog().get(0), is(log));
+	}
+	
+	/**
+	 * Überprüft, ob der Fehler abgefangen und eine entsprechende
+	 * Status-Nachricht gesetzt wurde.
+	 * 
+	 * @see org.db.main.DbController#sql(String)
+	 */
+	@Test
+	public void testSqlStringLogDataWithErrorAndDataAsData() {
+		Exception exception = new Exception();
+		String sql = "SELECT test FROM sqlite_master WHERE type='table'";
+
+		LogData log = DbStatus.errorDatabaseMessage(exception);
+		
+		assertThat(DbController.getInstance().sql(sql, log), is(false));
+		
+		assertThat(StatusBar.getInstance().getLog().size(), is(1));
+		assertThat(StatusBar.getInstance().getLog().get(0), is(log));
+	}
+	
+	/**
+	 * Überprüft, ob ein Fehler erzeugt wird, wenn null als SQL-Anweisung
+	 * übergeben wird.
+	 * 
+	 * @see org.db.main.DbController#sql(String)
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSqlStringLogDataWithNullAsParameter() {
+		DbController.getInstance().sql(null, null);
+	}
+	
+	/**
+	 * Überprüft, ob der Fehler IllegalArgumentException ausgelöst wird, wenn
+	 * eine leere Zeichenkette übergeben wird.
+	 * 
+	 * @see org.db.main.DbController#sql(String)
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSqStringLogDatalWithEmptyStringAsParameter() {
+		DbController.getInstance().sql(new String(), null);
 	}
 }

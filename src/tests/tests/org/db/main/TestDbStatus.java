@@ -94,6 +94,19 @@ public class TestDbStatus {
 	}
 	
 	/**
+	 * Testet, ob der übergebene LogData-Eintrag den Vorgaben entspricht.
+	 * 
+	 * @param message Nachricht, die der LogData-Eintrag enthalten soll.
+	 * 
+	 * @param data LogData-Eintrag, der auf Richtigkeit überprüft werden soll.
+	 */
+	private void testMessageData(String message, LogData data) {
+		assertThat(data.getOut(), is(LogData.DATABASE_INSERT));
+		assertThat(data.getError(), isEmptyString());
+		assertThat(data.getMessage(), is(message));
+	}
+	
+	/**
 	 * Testet, ob der letzte Eintrag im Logbuch eine Fehler-Nachricht ist, die
 	 * den angegebenen Text und den angegebenen Fehler beinhaltet.
 	 * 
@@ -104,6 +117,21 @@ public class TestDbStatus {
 	private void testError(String message, String error) {
 		LogData data = getLastLog();
 		
+		assertThat(data.getOut(), is (LogData.DATABASE_ERROR));
+		assertThat(data.getError(), is(error));
+		assertThat(data.getMessage(), is(message));
+	}
+	
+	/**
+	 * Testet, ob der übergebene LogData-Eintrag den Vorgaben entspricht.
+	 * 
+	 * @param message Nachricht, die der letzte Logbuch-Eintrag enthalten soll.
+	 * 
+	 * @param error Fehler, den der letzte Logbuch-Eintrag enthalten soll.
+	 * 
+	 * @param data LogData-Eintrag, der auf Richtigkeit überprüft werden soll.
+	 */
+	private void testErrorData(String message, String error, LogData data) {
 		assertThat(data.getOut(), is (LogData.DATABASE_ERROR));
 		assertThat(data.getError(), is(error));
 		assertThat(data.getMessage(), is(message));
@@ -123,6 +151,17 @@ public class TestDbStatus {
 	}
 
 	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#createTable(java.lang.String)
+	 */
+	@Test
+	public void testCreateTableMessage() {
+		testMessageData("Datenbank: Die Tabelle '" + _tableName + 
+				"' wurde erstellt.", DbStatus.createTableMessage(_tableName));
+	}
+
+	/**
 	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
 	 * 
 	 * @see org.db.main.DbStatus#preparedTable(java.lang.String)
@@ -131,6 +170,21 @@ public class TestDbStatus {
 	public void testPreparedTable() {
 		DbStatus.preparedTable(_tableName);
 		LogData data = getLastLog();
+		
+		assertThat(data.getOut(), is(LogData.OK));
+		assertThat(data.getError(), isEmptyString());
+		assertThat(data.getMessage(), is("Datenbank: Die Tabelle '" +
+				_tableName + "' wurde vorbereitet."));
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#preparedTable(java.lang.String)
+	 */
+	@Test
+	public void testPreparedTableMessage() {
+		LogData data = DbStatus.preparedTableMessage(_tableName);
 		
 		assertThat(data.getOut(), is(LogData.OK));
 		assertThat(data.getError(), isEmptyString());
@@ -153,6 +207,18 @@ public class TestDbStatus {
 	}
 
 	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#createTable(java.lang.String)
+	 */
+	@Test
+	public void testTableErrorMessage() {
+		testErrorData("Datenbank: Fehler beim Zugriff auf die Tabelle '" +
+				_tableName + "'.", _errorMessage,
+				DbStatus.tableErrorMessage(_tableName, _error));
+	}
+
+	/**
 	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
 	 * 
 	 * @see org.db.main.DbStatus#insertInTable(java.lang.String)
@@ -163,6 +229,18 @@ public class TestDbStatus {
 		
 		testMessage("Datenbank: In die Tabelle '" + _tableName + 
 				"' wurde ein Datensatz eingefügt.");
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#createTable(java.lang.String)
+	 */
+	@Test
+	public void testInsertInTableMessage() {
+		testMessageData("Datenbank: In die Tabelle '" + _tableName + 
+				"' wurde ein Datensatz eingefügt.",
+				DbStatus.insertInTableMessage(_tableName));
 	}
 
 	/**
@@ -180,6 +258,19 @@ public class TestDbStatus {
 	}
 
 	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#notInsertInTable(java.lang.String,
+	 * java.lang.Exception)
+	 */
+	@Test
+	public void testNotInsertInTableMessage() {
+		testErrorData("Datenbank: Der Datensatz konnte nicht in die Tabelle '" +
+				_tableName +"' eingefügt werden", _errorMessage,
+				DbStatus.notInsertInTableMessage(_tableName, _error));
+	}
+
+	/**
 	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
 	 * 
 	 * @see org.db.main.DbStatus#updateInTable(java.lang.String, int)
@@ -191,6 +282,19 @@ public class TestDbStatus {
 		testMessage("Datenbank: Der Datensatz mit der ID " +
 				String.valueOf(_id) + " aus der Tabelle '" + _tableName +
 				"' wurde geändert.");
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#updateInTable(java.lang.String, int)
+	 */
+	@Test
+	public void testUpdateInTableMessage() {
+		testMessageData("Datenbank: Der Datensatz mit der ID " +
+				String.valueOf(_id) + " aus der Tabelle '" + _tableName +
+				"' wurde geändert.",
+				DbStatus.updateInTableMessage(_tableName, _id));
 	}
 
 	/**
@@ -209,6 +313,20 @@ public class TestDbStatus {
 	}
 
 	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#notInsertInTable(java.lang.String,
+	 * java.lang.Exception)
+	 */
+	@Test
+	public void testNotUpdateInTableMessage() {
+		testErrorData("Datenbank: Der Datensatz mit der ID " + _id + 
+				" aus der Tabelle '" + _tableName + 
+				"' konnte nicht geändert werden.", _errorMessage,
+				DbStatus.notUpdateInTableMessage(_tableName, _id, _error));
+	}
+
+	/**
 	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
 	 * 
 	 * @see org.db.main.DbStatus#deleteFromTable(java.lang.String, int)
@@ -219,6 +337,18 @@ public class TestDbStatus {
 		
 		testMessage("Datenbank: Der Datensatz mit der ID " + _id +
 				" wurde aus der Tabelle '" + _tableName + "' gelöscht.");
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#deleteFromTable(java.lang.String, int)
+	 */
+	@Test
+	public void testDeleteFromTableMessage() {
+		testMessageData("Datenbank: Der Datensatz mit der ID " + _id +
+				" wurde aus der Tabelle '" + _tableName + "' gelöscht.",
+				DbStatus.deleteFromTableMessage(_tableName, _id));
 	}
 
 	/**
@@ -234,6 +364,20 @@ public class TestDbStatus {
 		testError("Datenbank: Der Datensatz mit der ID " + _id +
 				" konnte nicht aus der Tabelle '" + _tableName + 
 				"' gelöscht werden.", _errorMessage);
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#notDeleteFromTable(java.lang.String, int,
+	 * java.lang.Exception)
+	 */
+	@Test
+	public void testNotDeleteFromTableMessage() {
+		testErrorData("Datenbank: Der Datensatz mit der ID " + _id +
+				" konnte nicht aus der Tabelle '" + _tableName + 
+				"' gelöscht werden.", _errorMessage,
+				DbStatus.notDeleteFromTableMessage(_tableName, _id, _error));
 	}
 
 	/**
@@ -254,23 +398,53 @@ public class TestDbStatus {
 	/**
 	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
 	 * 
+	 * @see org.db.main.DbStatus#getFromTableMessage(java.lang.String, int,
+	 * java.lang.Exception)
+	 */
+	@Test
+	public void testGetFromTableMessage() {
+		testErrorData("Datenbank: Der Datensatz mit der ID " + _id +
+				" konnte nicht in der Tabelle '" + _tableName +
+				"' gefunden werden.", _errorMessage,
+				DbStatus.getFromTableMessage(_tableName, _id, _error));
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
+	 * 
 	 * @see org.db.main.DbStatus#notSql(java.lang.String, java.lang.Exception)
 	 */
 	@Test
 	public void testNotSql() {
 		String sql = "SELECT * FROM test";
 		DbStatus.notSql(sql, _error);
-		LogData data = getLastLog();
+		
+		String error = "SQL-Abfrage, bei der der Fehler aufgetreten ist:" +
+				System.lineSeparator() + "\t" + sql + System.lineSeparator() +
+				System.lineSeparator() + "Fehlerbericht:" +
+				System.lineSeparator() + _errorMessage;
+
+		testError("Datenbank: Es ist ein Fehler beim " +
+				"ausführen einer SQL-Abfrage aufgetreten.", error);
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#notSql(java.lang.String, java.lang.Exception)
+	 */
+	@Test
+	public void testNotSqlMessage() {
+		String sql = "SELECT * FROM test";
 		
 		String error = "SQL-Abfrage, bei der der Fehler aufgetreten ist:" +
 				System.lineSeparator() + "\t" + sql + System.lineSeparator() +
 				System.lineSeparator() + "Fehlerbericht:" +
 				System.lineSeparator() + _errorMessage;
 		
-		assertThat(data.getOut(), is (LogData.DATABASE_ERROR));
-		assertThat(data.getError(), is(error));
-		assertThat(data.getMessage(), is("Datenbank: Es ist ein Fehler beim " +
-				"ausführen einer SQL-Abfrage aufgetreten."));
+		testErrorData("Datenbank: Es ist ein Fehler beim " +
+				"ausführen einer SQL-Abfrage aufgetreten.", error,
+				DbStatus.notSqlMessage(sql, _error));
 	}
 
 	/**
@@ -291,4 +465,69 @@ public class TestDbStatus {
 				"erfolgreich ausgeführt."));
 	}
 
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#sql(java.lang.String)
+	 */
+	@Test
+	public void testSqlMessage() {
+		String sql = "SELECT * FROM test";
+		LogData data = DbStatus.sqlMessage(sql);
+		
+		assertThat(data.getOut(), is(LogData.DATABASE_INSERT));
+		assertThat(data.getError(), is("SQL-Abfrage, die ausgeführt wurde:" +
+				System.lineSeparator() + "\t" + sql));
+		assertThat(data.getMessage(), is("Datenbank: SQL-Abfrage wurde " +
+				"erfolgreich ausgeführt."));
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
+	 * 
+	 * @see org.db.main.DbStatus#errorDatabase(Exception)
+	 */
+	@Test
+	public void testErrorDataBase() {
+		DbStatus.errorDatabase(_error);
+		
+		testError("Datenbank: Fehler beim Zugriff auf die Datenbank.",
+				_errorMessage);
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#errorDatabase(Exception)
+	 */
+	@Test
+	public void testErrorDatabaseMessage() {
+		testErrorData("Datenbank: Fehler beim Zugriff auf die Datenbank.",
+				_errorMessage, DbStatus.errorDatabaseMessage(_error));
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig ins Logbuch eingefügt wurde.
+	 * 
+	 * @see org.db.main.DbStatus#notCreateTable(String, Exception)
+	 */
+	@Test
+	public void testnotCreateTable() {
+		DbStatus.notCreateTable(_tableName, _error);
+		
+		testError("Datenbank: Die Tabelle '" + _tableName +
+				"' konnte nicht erstellt werden.", _errorMessage);
+	}
+
+	/**
+	 * Testet, ob die Nachricht richtig zurückgegeben wird.
+	 * 
+	 * @see org.db.main.DbStatus#notCreateTable(String, Exception)
+	 */
+	@Test
+	public void testnotCreateTableMessage() {
+		testErrorData("Datenbank: Die Tabelle '" + _tableName +
+				"' konnte nicht erstellt werden.", _errorMessage,
+				DbStatus.notCreateTableMessage(_tableName, _error));
+	}
 }
